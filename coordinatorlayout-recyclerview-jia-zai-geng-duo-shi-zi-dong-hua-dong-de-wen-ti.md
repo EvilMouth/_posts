@@ -18,7 +18,7 @@ categories: Android
 
 使用`CoordinatorLayout`联动`RecyclerView`的情况下（普通情况不会），加载更多是通过设置`多Type`的方式注入`adapter`实现的。当快速滑动`RecyclerView`时，通过`notifyItemRangeInserted`插入数据到尾部，则会发生下图所示的情况。
 
-![1.gif](../assets/coordinatorlayout-recyclerview-jia-zai-geng-duo-shi-zi-dong-hua-dong-de-wen-ti/before.gif)
+![](http://images.zyhang.com/FnLtr3x5u3X2APOoXxMhluauJ974)
 
 # 解决之路
 
@@ -72,4 +72,4 @@ public void addList(List<Object> list) {
 }
 ```
 
-![](../assets/coordinatorlayout-recyclerview-jia-zai-geng-duo-shi-zi-dong-hua-dong-de-wen-ti/after.gif)
+![](http://images.zyhang.com/FiXm7bedEBxIgP3zUDnFbieH8Hag)
