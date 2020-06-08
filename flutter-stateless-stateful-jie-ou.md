@@ -2,6 +2,7 @@
 layout: post
 title: flutter-StatelessWidget与StatefulWidget的解耦
 date: 2018-06-13 15:54:47
+updated: 2018-08-10 15:54:47
 tags: learn
 categories: Flutter
 ---

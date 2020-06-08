@@ -2,6 +2,7 @@
 layout: post
 title: 智能合约真好玩（二）
 date: 2019-01-09 16:28:16
+updated: 2019-01-09 16:28:16
 tags: 
  - ethereum
  - contract

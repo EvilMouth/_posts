@@ -2,6 +2,7 @@
 layout: post
 title: 更简单的方式上传jcenter
 date: 2018-08-10 16:52:21
+updated: 2018-08-10 16:52:21
 tags:
  - jcenter
  - novoda

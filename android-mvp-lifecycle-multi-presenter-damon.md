@@ -2,6 +2,7 @@
 layout: post
 title: Android MVP - 拥有完整生命周期的Presenter，支持Multi P
 date: 2018-08-11 10:16:29
+updated: 2018-08-11 10:16:29
 tags: mvp
 categories: Android
 ---

@@ -2,6 +2,7 @@
 layout: post
 title: ARouter @Autowired 自动注入
 date: 2020-05-31 11:30:08
+updated: 2020-05-31 11:30:08
 tags:
   - byte
   - inject
