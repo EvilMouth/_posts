@@ -2,7 +2,7 @@
 layout: post
 title: 前前前后后后
 date: 2020-02-29 19:21:34
-updated: 2020-03-01 19:21:34
+updated: 2020-06-21 10:56:34
 tags:
   - eggjs
   - sqeuelize
@@ -28,9 +28,14 @@ categories: Backend
 
 ### sequelize
 
-TODO
+- npm start --env=prod
+- npx sequelize migration:generate --name=init-users
+- npx sequelize db:migrate --env production
+- npx sequelize db:migrate:undo --env production
 
 ## 服务器
+
+- cat id_rsa.pub >> authorized_keys
 
 很多跟SELinux有关，比方说
 - Nginx安装启动后竟然连欢迎页都打不开
@@ -40,16 +45,26 @@ TODO
 
 基本上遇到很多之前搭服务器没遇到过的问题，遇到这些异常问题时，可以考虑下是否是SELinux的问题，试着先临时关闭它排查下
 
+- sestatus -v 或 getenforce 查看状态
+- setenforce 0 临时关闭
+- vim /etc/selinux/config; SELINUX=disabled 永久关闭
 - netstat -tnpl
 - sudo firewall-cmd --zone=public --add-port=3000/tcp --permanent
 - sudo firewall-cmd --reload
 - sudo firewall-cmd --remove-port=3000/tcp --permanent
 - sudo firewall-cmd --reload
 
+### Node
+
+- curl --silent --location https://rpm.nodesource.com/setup_10.x | bash -
+- yum install nodejs
+
 ### Nginx
 
+- yum install epel-release 安装epel源
 - yum install nginx
 - service nginx start
+- systemctl list-unit-files|grep nginx
 - systemctl enable nginx
 - vim /etc/nginx/nginx.conf
 - include xxx/xxx/*.conf
@@ -60,6 +75,11 @@ SELinux限制
 - sudo firewall-cmd --permanent --zone=public --add-service=http
 - sudo firewall-cmd --permanent --zone=public --add-service=https
 - sudo firewall-cmd --reload
+
+Firewalld
+- service firewalld stop
+- firewall-cmd --zone=public --add-port=80/tcp --permanent
+- service firewalld reload
 
 #### 无权限读取conf文件
 
@@ -74,16 +94,20 @@ SELinux限制
 
 ### Mysql
 
+- wget https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+- rpm -ivh mysql80-community-release-el7-3.noarch.rpm
 - yum install mysql-server
 - service mysqld start
+- systemctl list-unit-files|grep mysqld
 - systemctl enable mysqld
+- mysqld --initialize
 - grep 'temporary password' /var/log/mysqld.log
-- mysql -uroot -p
-- >mysql create user 'userxxx'@'localhost' identified of 'psdxxx';
-- >mysql grant all privileges on *.* to 'userxxx'@'%' with grant option;
-- >mysql flush privileges;
-- >mysql use mysql;
-- >mysql select Host,User from user where User='userxxx'
+- mysql -u root -p
+-- alter user 'root'@'localhost' identified by 'yourpassword';
+-- show databases;
+-- use mysql;
+
+- rpm -qa|grep mysql 查看历史版本
 
 ### cron自启动eggjs
 
