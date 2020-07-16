@@ -19,7 +19,8 @@ alipays://platformapi/startapp?appId=[appId]&page=[pagePath]&query=[params]
 - pagePath 是页面路径，也就是本文要讲的，不带则跳首页
 - params 是额外参数
 
-> 更多信息请前往官网[https://opensupport.alipay.com/support/knowledge/31867/201602383690?ant_source=zsearch](https://opensupport.alipay.com/support/knowledge/31867/201602383690?ant_source=zsearch)
+> 更多信息请前往官网
+> [https://opensupport.alipay.com/support/knowledge/31867/201602383690?ant_source=zsearch](https://opensupport.alipay.com/support/knowledge/31867/201602383690?ant_source=zsearch)
 
 <!-- More -->
 

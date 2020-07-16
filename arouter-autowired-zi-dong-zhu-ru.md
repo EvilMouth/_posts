@@ -32,7 +32,7 @@ public class MainFragment {
 
 通过`Arouter.getInstance().inject(this);`就能将Activity传输的一些值自动帮我们赋值上对应变量，省去我们手动去调用`getIntent().getString(xxx)`
 
-## Arouter.getInstance().inject(this);
+## inject(this)
 
 那么看下它做了什么，翻了几下发现，ARouter会做以下几步操作
 1、APT编译期间扫描@Autowired字段的文件并生成MainFragment$$ARouter$$Autowired文件
