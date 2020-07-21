@@ -31,9 +31,9 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 ## 创建一个release
 为你的`Github`仓库创建一个`release`
-![](http://images.zyhang.com/17-5-8/84269509-file_1494227979898_fc74.png)
-![](http://images.zyhang.com/17-5-8/22225564-file_1494228002946_9e3c.png)
-![](http://images.zyhang.com/17-5-8/38416150-file_1494228025794_2f35.png)
+![](https://images.zyhang.com/17-5-8/84269509-file_1494227979898_fc74.png)
+![](https://images.zyhang.com/17-5-8/22225564-file_1494228002946_9e3c.png)
+![](https://images.zyhang.com/17-5-8/38416150-file_1494228025794_2f35.png)
 
 ## 拉依赖
 ```

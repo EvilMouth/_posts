@@ -40,12 +40,12 @@ alipays://platformapi/startapp?appId=77700189&page=pages%2Findex%2Findex&enbsv=0
 
 - 一台root的手机
 - 进入到`data/data/com.eg.android.AlipayGphone/files/nebulaInstallApps`
-![](http://images.zyhang.com/FhCa-97vEkQ7gaQQ9u7Xfcao0dm5)
+![](https://images.zyhang.com/FhCa-97vEkQ7gaQQ9u7Xfcao0dm5)
 - 找到77700189
-![](http://images.zyhang.com/FiHuYsj6EhYBDSlQc5xXMPyXeMdK)
+![](https://images.zyhang.com/FiHuYsj6EhYBDSlQc5xXMPyXeMdK)
 - 其中的tar文件就是答答星球打包后的压缩包
 - 传到电脑解压拿到所有页面路径
-![](http://images.zyhang.com/FrzcJjE1ZxCmTWt-C3vBvBQ62hds)
+![](https://images.zyhang.com/FrzcJjE1ZxCmTWt-C3vBvBQ62hds)
 
 ### 跳转
 

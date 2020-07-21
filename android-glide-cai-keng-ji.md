@@ -44,7 +44,7 @@ private static void checkAndInitializeGlide(@NonNull Context context) {
 这个是`Glide`的初始化问题，是什么导致的呢？协程？同步锁？混淆？
 
 我一开始也是以为是混淆问题，所以赶紧去官网翻了下混淆文档
-![](http://images.zyhang.com/18-11-6/89875063.jpg)
+![](https://images.zyhang.com/18-11-6/89875063.jpg)
 
 嗯？没什么问题，一切按照文档配置，针对自定义的`AppGlideModule`也有防混，那么只能上issue看看了
 
