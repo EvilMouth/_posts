@@ -7,7 +7,7 @@ tags: flutter
 categories: Flutter
 ---
 
-runApp过程介绍，需要先了解mixin概念
+runApp 过程介绍以及 Binding 的作用，需要先了解 mixin 概念
 
 ## runApp
 
