@@ -3,7 +3,10 @@ layout: post
 title: Flutter runApp
 date: 2020-09-03 16:58:07
 updated: 2020-09-03 16:58:07
-tags: flutter
+tags:
+  - flutter
+  - launch
+  - source
 categories: Flutter
 ---
 

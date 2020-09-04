@@ -4,8 +4,8 @@ title: Android View - Flutter Widget
 date: 2020-08-13 11:15:07
 updated: 2020-08-13 11:15:07
 tags:
+  - flutter
   - widget
-  - different
 categories: Flutter
 ---
 

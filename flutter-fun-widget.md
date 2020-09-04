@@ -3,7 +3,9 @@ layout: post
 title: Fun Flutter Widget
 date: 2020-08-14 11:18:09
 updated: 2020-08-14 11:18:09
-tags: widget
+tags:
+  - flutter
+  - widget
 categories: Flutter
 ---
 

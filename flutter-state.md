@@ -3,7 +3,10 @@ layout: post
 title: Flutter State
 date: 2020-08-14 11:20:45
 updated: 2020-08-14 11:20:45
-tags: state
+tags:
+  - flutter
+  - state
+  - source
 categories: Flutter
 ---
 
