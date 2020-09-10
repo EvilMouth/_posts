@@ -65,7 +65,7 @@ String encodePolicy = BinaryUtils.toBase64(policy.getBytes("utf-8"));
 
 创建完`policy`之后就是创建`签名key`了，这一步文档倒是说得比较明白
 
-![](https://images.zyhang.com/18-6-7/92746579.jpg)
+![jsdelivr](1.jpeg)
 
 官方也有提供对应的`HMAC-SHA256`
 ```java
@@ -122,4 +122,4 @@ String signature = byte2hex(HmacSHA256(encodePolicy, bytes));
 
 根据上面三步拿到两个`POST`上传需要的东西`encode-policy`和`signature`，然后将其他策略条件一并返回给前端，让前端直接将文件上传到`s3`
 
-![](https://images.zyhang.com/18-6-7/7536730.jpg)
+![jsdelivr](2.jpeg)

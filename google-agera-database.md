@@ -159,4 +159,4 @@ Repository<Result<List<Bike>>> query = Repositories.repositoryWithInitialValue(R
 ### 总结
 创建`Repository`过程中涉及到一个`SqlRequest`，这其实就是一个查询request，针对增删改还有`SqlInsertRequest``SqlDeleteRequest``SqlUpdateRequest`一共四种request，都是通过`SqlRequests`创建。其实整个database库很小，一共也就几个类，所以使用起来还是挺方便的，重点还是得理解Repository。
 
-![database库](http://images.zyhang.com/17-2-23/96957663-file_1487830209735_660c.png)
+![jsdelivr](1.png)

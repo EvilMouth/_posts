@@ -23,7 +23,7 @@ categories: Android
 - 在你的GitHub账户里
 - 进入 Settings -> Developer Settings -> Personal Access Tokens -> Generate new token
 - 勾选`write:packages`和`read:packages`生成一个Token
-![](https://images.zyhang.com/1_I-rLmCgRCT9CKna-sdfV8w.jpeg)
+![jsdelivr](1.jpeg)
 - 生成Token后记得复制保存，该Token只显示在这一次，之后只能重新生成新的Token
 
 ### Step 2 - 配置Token到你的项目
@@ -92,7 +92,7 @@ credentials {
 $ gradle publish
 ```
 - 当任务成功后就可以在你的GitHub账户下的`Packages`栏找到该包
-![](https://images.zyhang.com/FqgU6hs2AZHSBzbGDhIzfSDSAI8g)
+![jsdelivr](2.jpeg)
 - 如果任务失败，可以跟`–stacktrace`、`–info`或者`-debug`一起执行查看日志
 
 > 注意：

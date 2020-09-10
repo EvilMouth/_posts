@@ -16,10 +16,10 @@ categories: Android
 ## 0x00 文章图片懒加载
 
 `Chrome`打开一篇微信公众号文章，审查元素，控制台输入`document.getElementsByTagName("img")`。可以看到正文图片的`img`标签定义了`img_loading`的`class`属性
-![](https://images.zyhang.com/18-8-21/55262970.jpg)
+![jsdelivr](1.jpeg)
 
 此时再看向该标签的`src`属性，是一张`base64`的`loading`图。这也就导致通常的做法是获取不到图片地址从而进行预览的
-![](https://images.zyhang.com/18-8-21/34624449.jpg)
+![jsdelivr](2.jpeg)
 
 ## 0x01 分析
 

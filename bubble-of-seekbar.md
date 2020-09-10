@@ -8,7 +8,7 @@ categories: Android
 ---
 
 最近的项目需要做聊天语音消息，自然是用`SeekBar`实现进度条，这个倒不难，播放拖动进度等功能。但是设计师要拖动进度的同时`thumb`上方显示一个气泡显示秒数，效果如下
-![](https://images.zyhang.com/17-8-9/68316050.jpg)
+![jsdelivr](1.jpeg)
 
 毕竟`SeekBar`没提供这个功能，所以首先想到的是自定义`View`，然后重写`onTouch`滑动显示气泡，气泡也属于自定义`View`里面，但是这样有个问题，由于气泡包在自定义`View`里面，所以控件高度不会是设计师要的效果，所以想到了`Window`。跟`Dialog`、`Toast`类似。
 
