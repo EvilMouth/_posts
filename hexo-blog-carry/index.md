@@ -3,7 +3,8 @@ layout: post
 title: 使用Hexo搭载博客
 date: 2017-02-24 16:18:14
 updated: 2017-02-24 16:18:14
-tags: blog
+tags:
+  - blog
 categories: Hexo
 ---
 

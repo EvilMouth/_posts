@@ -3,7 +3,8 @@ layout: post
 title: 亚马逊S3`POST`上传策略
 date: 2018-06-07 11:43:11
 updated: 2018-06-07 11:43:11
-tags: amazon
+tags:
+  - amazon
 categories: Backend
 ---
 

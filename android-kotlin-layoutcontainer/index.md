@@ -3,7 +3,8 @@ layout: post
 title: Kotlin androidExtensions findViewById缓存问题
 date: 2019-09-26 10:42:26
 updated: 2020-03-11 10:42:26
-tags: kotlin
+tags:
+  - kotlin
 categories: Android
 ---
 

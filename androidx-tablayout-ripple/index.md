@@ -3,7 +3,8 @@ layout: post
 title: AndroidX TabLayout点击效果兼容问题
 date: 2018-10-24 14:08:49
 updated: 2018-10-24 14:08:49
-tags: tabLayout
+tags:
+  - tabLayout
 categories: Android
 ---
 
