@@ -14,7 +14,7 @@ runApp 过程介绍以及 Binding 的作用，需要先了解 mixin 概念
 
 ## runApp
 
-runApp作为Flutter启动App入口，具体做了哪些操作，通过源码一步步分析
+runApp 作为 Flutter 启动 App 入口，具体做了哪些操作，通过源码一步步分析
 
 ```dart
 void runApp(Widget app) {
@@ -50,7 +50,7 @@ class WidgetsFlutterBinding extends BindingBase with GestureBinding, SchedulerBi
 }
 ```
 
-> WidgetsFlutterBinding 实际上只是一个粘合剂，通过继承 BindingBase 以及使用 *混入* 将一系列 Binding 结合起来。
+> WidgetsFlutterBinding 实际上只是一个粘合剂，通过继承 BindingBase 以及使用 _混入_ 将一系列 Binding 结合起来。
 
 所以具体作用还得往下看。直接看 BindingBase 的构造函数
 
@@ -67,7 +67,7 @@ BindingBase() {
 }
 ```
 
-- initInstances 是一个空实现，具体作用是让 *混入* 的一系列 Binding 进行自己的初始化，后续会介绍各自的作用
+- initInstances 是一个空实现，具体作用是让 _混入_ 的一系列 Binding 进行自己的初始化，后续会介绍各自的作用
 - initServiceExtensions 允许子类注册一些服务扩展监听
 
 接下来就一个个 Binding 看下都是干什么的
@@ -91,7 +91,7 @@ mixin GestureBinding on BindingBase implements HitTestable, HitTestDispatcher, H
 
 GestureBinding 的初始化实现了 onPointerDataPacket 回调，负责处理窗口手势事件。并实现了 HitTest 相关的接口，目的就是为了进行命中测试查找到点击屏幕的位置对应的 Widget 然后分发事件
 
-#### SchedulerBinding Frame调度相关
+#### SchedulerBinding Frame 调度相关
 
 ```dart
 @protected
@@ -100,9 +100,11 @@ void ensureFrameCallbacksRegistered() {
   window.onDrawFrame ??= _handleDrawFrame;
 }
 ```
+
 SchedulerBinding 主要负责每一帧的调度，Ticker 和 Animation 就是由他所控制。
 
 SchedulerBinding 实现了 onBeginFrame 和 onDrawFrame 回调，并处理屏幕刷新事件。handleBeginFrame 和 handleDrawFrame 就是负责执行每一帧需要处理的事务，这些事务可以通过 SchedulerBinding.instance 进行注册，其中共有三种类型的事务
+
 - transientCallbacks 用于处理一些临时的绘制，例如动画
 - persistentCallbacks 负责布局绘制工作
 - postFrameCallbacks 处理一次性绘制
@@ -128,10 +130,11 @@ mixin ServicesBinding on BindingBase, SchedulerBinding {
 ```
 
 ServicesBinding 负责与 Native 进行通信，在初始化时分别做一下操作
+
 - createBinaryMessenger() 创建通信信使
 - 实现 onPlatformMessage 回调，用以处理平台消息
 - initLicenses() 添加一些许可，会自动整合然后通过 LicensePage 展示，一般不会用到
-- SystemChannels.system 监听平台内存紧张回调，用于清理图片缓存、Widget一些自定义处理
+- SystemChannels.system 监听平台内存紧张回调，用于清理图片缓存、Widget 一些自定义处理
 - SystemChannels.lifecycle 接收平台页面生命周期事件，只有处于前台才会调度绘制
 - readInitialLifecycleStateFromNativeWindow() 读取平台当前生命状态进行绘制的调度
 
@@ -153,7 +156,7 @@ mixin PaintingBinding on BindingBase, ServicesBinding {
 
 PaintingBinding 的初始化中通过 createImageCache() 创建了一个全局图片缓存单例，Image Widget 便是将图片缓存在这里。
 
-> shaderWarmUp 为 Skia着色器 热身，热身就是为了防止可能出现的卡顿
+> shaderWarmUp 为 Skia 着色器 热身，热身就是为了防止可能出现的卡顿
 
 PaintingBinding 还实现了 ServicesBinding 的 handleSystemMessage(Object systemMessage) 来监听平台的 fontsChange 事件，可以通过 PaintingBinding.instance.systemFonts.addListener 来进行监听
 
@@ -204,16 +207,17 @@ mixin RendererBinding on BindingBase, ServicesBinding, SchedulerBinding, Gesture
 > RendererBinding 官方定义为渲染树与 Flutter engine 的粘合剂，负责渲染树的一切行为
 
 通过 RendererBinding 的初始化可以看到做了这些操作
+
 - PipelineOwner 的创建，PipelineOwner 负责渲染一系列流程的工作，setState 后的 dirty 状态就是由他维护
 - 实现了 onMetricsChanged 回调，处理缩放比例改变并通过 SchedulerBinding 调度渲染
 - 实现了 onTextScaleFactorChanged 回调，处理文字缩放改变，通过 WidgetsBinding.instance.addObserver 添加监听
 - 实现了 onPlatformBrightnessChanged 回调，处理亮度改变，一样是通过 WidgetsBinding 去添加监听
 - 实现了 semantic 相关回调，处理辅助服务相关内容
 - initRenderView() 创建渲染树的根元素
-- addPersistentFrameCallback(_handlePersistentFrameCallback) 向 SchedulerBinding 的 _persistentCallbacks 注册一个回调，该回调负责的就是渲染流程的动画、计算、布局、绘制的工作
+- addPersistentFrameCallback(\_handlePersistentFrameCallback) 向 SchedulerBinding 的 \_persistentCallbacks 注册一个回调，该回调负责的就是渲染流程的动画、计算、布局、绘制的工作
 - initMouseTracker() 创建焦点追踪器，在例如 Tooltip Widget、高亮中就使用到
 
-#### WidgetsBinding Widget相关
+#### WidgetsBinding Widget 相关
 
 ```dart
 /// The glue between the widgets layer and the Flutter engine.
@@ -244,6 +248,7 @@ mixin WidgetsBinding on BindingBase, ServicesBinding, SchedulerBinding, GestureB
 > WidgetsBinding 是所有 Binding 中最重要的一环，**Flutter 万物皆 Widget**，WidgetsBinding 负责
 
 WidgetsBinding 初始化主要做了以下操作
+
 - 创建 BuildOwner，负责管控那些需要**rebuild**的 widget（也就是标记为 dirty 的 element）
 - handleBuildScheduled 会在 widget rebuild 时调用，并发起绘制调度
 - 实现 onLocaleChanged 回调，处理语言变化
@@ -284,7 +289,7 @@ void attachRootWidget(Widget rootWidget) {
 }
 ```
 
-scheduleAttachRootWidget 是 WidgetsBinding 的一个成员方法，负责将我们的 app widget 附加到 RenderView 上。通过 attachRootWidget 可以看到创建了 _renderViewElement，可以理解为 RenderView 对应的 Element。最后根据 app widget 所形成的 widget tree 创建出对应的 element tree。
+scheduleAttachRootWidget 是 WidgetsBinding 的一个成员方法，负责将我们的 app widget 附加到 RenderView 上。通过 attachRootWidget 可以看到创建了 \_renderViewElement，可以理解为 RenderView 对应的 Element。最后根据 app widget 所形成的 widget tree 创建出对应的 element tree。
 
 ### scheduleWarmUpFrame - 做什么的
 
@@ -346,7 +351,7 @@ void scheduleWarmUpFrame() {
 
 在这里，scheduleWarmUpFrame 不等待 Vsync 信号进而触发 window#draw 回调，而是直接自行发现，进行一次绘制，并且使用锁定了事件分发，保证第一次绘制完成前不会有别的绘制插件来（dart 的消息循环机制）。
 
-handleBeginFrame 和 handleDrawFrame 在上面篇章 SchedulerBinding 有讲到，都是执行绘制任务，这些任务在 WidgetsBinding、各种Widget 中均可找到注册。
+handleBeginFrame 和 handleDrawFrame 在上面篇章 SchedulerBinding 有讲到，都是执行绘制任务，这些任务在 WidgetsBinding、各种 Widget 中均可找到注册。
 
 渲染树的绘制在上面讲到的 RendererBinding 中具体体现。
 
@@ -423,6 +428,6 @@ void drawFrame() {
 - flushLayout 布局
 - flushCompositingBits 预处理，检查是否需要重绘
 - flushPaint 绘制，只会绘制需要重绘的节点
-- compositeFrame 生成绘制一帧的Scene对象，发送个GPU进行绘制
+- compositeFrame 生成绘制一帧的 Scene 对象，发送个 GPU 进行绘制
 
 > drawFrame 对应的就是绘制流水线的具体操作

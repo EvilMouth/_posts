@@ -9,11 +9,11 @@ tags:
 categories: Flutter
 ---
 
-本文介绍日常开发中比较实用的Flutter Widget
+本文介绍日常开发中比较实用的 Flutter Widget
 
 ## Placeholder 占位图
 
-常用在异步加载请求时先使用Placeholder代替显示，请求结束后替换
+常用在异步加载请求时先使用 Placeholder 代替显示，请求结束后替换
 
 ```dart
 const Placeholder({
@@ -27,7 +27,7 @@ const Placeholder({
 
 ## Form 表单
 
-例如登陆页面，利用Form Widget将用户名和密码两个输入框包起来，通过Key进行统一校验，还自带返回按键监听
+例如登陆页面，利用 Form Widget 将用户名和密码两个输入框包起来，通过 Key 进行统一校验，还自带返回按键监听
 
 ```dart
 const Form({
@@ -39,7 +39,7 @@ const Form({
 })
 ```
 
-> 在Form里使用的输入框目前只提供TextFormField和DropdownButtonFormField，两者都继承FormField，可自行扩展
+> 在 Form 里使用的输入框目前只提供 TextFormField 和 DropdownButtonFormField，两者都继承 FormField，可自行扩展
 
 ```dart
 Form(
@@ -81,9 +81,9 @@ Form(
 )
 ```
 
-### FormField为何要被包在Form里面
+### FormField 为何要被包在 Form 里面
 
-Form是个StatefuleWidget，state是FormState，FormState提供了一些操作FormField的方法，比如validate、save。如何获取呢，原因在FormField的build()方法内向上获取到Form，并将自己注册给Form
+Form 是个 StatefuleWidget，state 是 FormState，FormState 提供了一些操作 FormField 的方法，比如 validate、save。如何获取呢，原因在 FormField 的 build()方法内向上获取到 Form，并将自己注册给 Form
 
 ```dart
 @override
@@ -93,11 +93,11 @@ Widget build(BuildContext context) {
 }
 ```
 
-> Form.of是什么，这就要讲到Flutter的InheritedWidget，InheritedWidget是一个方便子Widget获取父Widget提供的属性的Widget。Theme.of、Local.of都是基于InheritedWidget
+> Form.of 是什么，这就要讲到 Flutter 的 InheritedWidget，InheritedWidget 是一个方便子 Widget 获取父 Widget 提供的属性的 Widget。Theme.of、Local.of 都是基于 InheritedWidget
 
-## FutureBuilder 支持异步加载的Widget
+## FutureBuilder 支持异步加载的 Widget
 
-一般如何实现异步加载动态更新布局，自然是通过setState改变状态。FutureBuilder就是这么一个封装的Widget，应用在比较单一、一次性的场景
+一般如何实现异步加载动态更新布局，自然是通过 setState 改变状态。FutureBuilder 就是这么一个封装的 Widget，应用在比较单一、一次性的场景
 
 ```dart
 const FutureBuilder({
@@ -126,13 +126,13 @@ FutureBuilder<String>(
 )
 ```
 
-> builder会回调多次，原因就是snapshot是一个状态，会改变多次
+> builder 会回调多次，原因就是 snapshot 是一个状态，会改变多次
 
-## WillPopScope 监听Android返回按钮
+## WillPopScope 监听 Android 返回按钮
 
-Android才需要的返回按键监听，例如应用在双击返回键退出应用等操作
+Android 才需要的返回按键监听，例如应用在双击返回键退出应用等操作
 
-> 上面介绍的Form也有一个onWillPop属性，其实就是包了一层WillPopScope
+> 上面介绍的 Form 也有一个 onWillPop 属性，其实就是包了一层 WillPopScope
 
 ```dart
 const WillPopScope({
@@ -142,7 +142,7 @@ const WillPopScope({
 })
 ```
 
-下面的例子通过WillPopScope包裹AlertDialog来实现一个无法通过返回按键取消的弹窗，只需要onWillPop返回flase即表示屏蔽返回
+下面的例子通过 WillPopScope 包裹 AlertDialog 来实现一个无法通过返回按键取消的弹窗，只需要 onWillPop 返回 flase 即表示屏蔽返回
 
 ```dart
 showDialog(
@@ -168,16 +168,15 @@ showDialog(
 )
 ```
 
-
 ## Overlay 实现悬浮按钮
 
-> Flutter的路由实际就是用Overlay实现
-> 
-> 可以理解为Flutter的世界只有一个Activity，不同的Page其实就是Fragment堆叠
-> 
-> 所以在Flutter实现全局悬浮按钮简直不要太简单
+> Flutter 的路由实际就是用 Overlay 实现
+>
+> 可以理解为 Flutter 的世界只有一个 Activity，不同的 Page 其实就是 Fragment 堆叠
+>
+> 所以在 Flutter 实现全局悬浮按钮简直不要太简单
 
-> Overlay跟着Navigator一起被创建，所以通过直接Overlay.of取得OverlayState
+> Overlay 跟着 Navigator 一起被创建，所以通过直接 Overlay.of 取得 OverlayState
 
 下面的例子展示如何悬浮一个全局按钮
 
@@ -212,12 +211,12 @@ class FloatingView extends StatelessWidget {
 ```
 
 > 如果需要移除，floatingView.remove()
-> 
-> 利用insert和remove即可实现Flutter层面的Toast
+>
+> 利用 insert 和 remove 即可实现 Flutter 层面的 Toast
 
 ## AbsorbPointer 快速禁止屏幕点击
 
-通过AbsorbPointer包裹住RaisedButton，即使RaisedButton声明了点击事件，但是AbsorbPointer也声明了absorbing: true，所有RaisedButton是点不了的
+通过 AbsorbPointer 包裹住 RaisedButton，即使 RaisedButton 声明了点击事件，但是 AbsorbPointer 也声明了 absorbing: true，所有 RaisedButton 是点不了的
 
 ```dart
 AbsorbPointer(
@@ -226,9 +225,9 @@ AbsorbPointer(
 )
 ```
 
-> Navigator其实也包裹了一层AbsorbPointer，在路由跳转过程，会吸收所有屏幕触摸事件，让跳转完成
+> Navigator 其实也包裹了一层 AbsorbPointer，在路由跳转过程，会吸收所有屏幕触摸事件，让跳转完成
 
-## Dismissible 列表Item滑动移除
+## Dismissible 列表 Item 滑动移除
 
 用来实现滑动删除场景
 
@@ -262,7 +261,7 @@ ListView.builder(
 
 ## Hero 图片过渡效果
 
-在Android 21以上，可以通过给View设置一个flag来让页面跳转时两个View直接有个过渡效果，通常用于浏览大图。在Flutter也是类似
+在 Android 21 以上，可以通过给 View 设置一个 flag 来让页面跳转时两个 View 直接有个过渡效果，通常用于浏览大图。在 Flutter 也是类似
 
 ```dart
 const Hero({
@@ -283,11 +282,11 @@ Hero(
 )
 ```
 
-> 只需要将Image包裹在Hero中并提供一个tag，在第二个页面同样标记，剩下的就交给Flutter帮我们实现过渡
+> 只需要将 Image 包裹在 Hero 中并提供一个 tag，在第二个页面同样标记，剩下的就交给 Flutter 帮我们实现过渡
 
 ## FractionallySizedBox 屏幕百分比
 
-通常用在某些Widget需要撑满屏幕
+通常用在某些 Widget 需要撑满屏幕
 
 ```dart
 const FractionallySizedBox({
@@ -299,20 +298,20 @@ const FractionallySizedBox({
 })
 ```
 
-## SizeBox 控制Widget大小
+## SizeBox 控制 Widget 大小
 
-字面意思，向父Widget申请一定大小的空间
+字面意思，向父 Widget 申请一定大小的空间
 
 ```dart
 SizeBox(width: 10, height: 10, child: null)
 ```
 
-- 充当两个Widget直接的Margin
-- 控制Widget大小
+- 充当两个 Widget 直接的 Margin
+- 控制 Widget 大小
 
-## Transform 改变Widget形态
+## Transform 改变 Widget 形态
 
-与Android的作用一致，可以对Widget进行形态上的改变，比如伪3D旋转
+与 Android 的作用一致，可以对 Widget 进行形态上的改变，比如伪 3D 旋转
 
 ```dart
 Transform(
@@ -326,9 +325,9 @@ Transform(
 )
 ```
 
-## IndexStack 快速切换Widget
+## IndexStack 快速切换 Widget
 
-例如某个Widget拥有很多种状态，每个状态不同的Icon，通过IndexStack先将所有Icon提供，通过改变index快速切换Icon
+例如某个 Widget 拥有很多种状态，每个状态不同的 Icon，通过 IndexStack 先将所有 Icon 提供，通过改变 index 快速切换 Icon
 
 ```dart
 IndexedStack(
@@ -341,13 +340,13 @@ IndexedStack(
 )
 ```
 
-> IndexedStack继承Stack，并重写了其渲染部分，只渲染index命中的Icon
+> IndexedStack 继承 Stack，并重写了其渲染部分，只渲染 index 命中的 Icon
 
 ## Wrap 流式布局
 
-> Wrap基本与Row/Column一致，不同的一点是当children超出范围的话，Wrap会自动将超出的chilren换行
+> Wrap 基本与 Row/Column 一致，不同的一点是当 children 超出范围的话，Wrap 会自动将超出的 chilren 换行
 
-下面的例子中第三第四个Chip后被layout在第二行
+下面的例子中第三第四个 Chip 后被 layout 在第二行
 
 ```dart
 Wrap(
@@ -378,11 +377,11 @@ Wrap(
 )
 ```
 
-## PageView Android下的ViewPager
+## PageView Android 下的 ViewPager
 
-估计是开发中最常用到的控件了，具体效果可以看Demo
+估计是开发中最常用到的控件了，具体效果可以看 Demo
 
-在Flutter中，通过PageView+BottomNavigationBar实现
+在 Flutter 中，通过 PageView+BottomNavigationBar 实现
 
 ```dart
 body: PageView( // 类似ViewPager
@@ -421,13 +420,13 @@ bottomNavigationBar: BottomNavigationBar(
 )
 ```
 
-> PageView是默认不保活的，可以将_DemoHomePageView混入AutomaticKeepAliveClientMixin并保证build方法调用super
+> PageView 是默认不保活的，可以将\_DemoHomePageView 混入 AutomaticKeepAliveClientMixin 并保证 build 方法调用 super
 
-> 混入mixin是什么，可以看dart语法，不同于java单继承，dart的mixin可以扩展属性和方法
+> 混入 mixin 是什么，可以看 dart 语法，不同于 java 单继承，dart 的 mixin 可以扩展属性和方法
 
 ## Texture 相机
 
-像相机这种需要实时传输大量图像数据的，Flutter提供了Texture，通过映射共享数据的工具
+像相机这种需要实时传输大量图像数据的，Flutter 提供了 Texture，通过映射共享数据的工具
 
 ```dart
 const Texture({
@@ -545,9 +544,9 @@ class _TextureBodyState extends State<TextureBody> {
 
 ## PlatformView WebView
 
-像WebView这种极其复杂的原生控件，用Flutter重新写不太现实，所以Flutter也提供这样一种Widget，将原生控件直接嵌入Flutter的Widget树。
+像 WebView 这种极其复杂的原生控件，用 Flutter 重新写不太现实，所以 Flutter 也提供这样一种 Widget，将原生控件直接嵌入 Flutter 的 Widget 树。
 
-官方已经提供WebView库帮我们代理了原生WebView
+官方已经提供 WebView 库帮我们代理了原生 WebView
 
 ```yaml
 webview_flutter: ^0.3.22+1

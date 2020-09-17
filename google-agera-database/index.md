@@ -10,24 +10,29 @@ updated: 2017-02-10 15:04:24
 
 （内白：第一次真正意义上写博客，这几年来开发路程遇到过许多问题，但都是简单标记一下，并没有记录下来，等过段时间遇到同样问题脑袋一热都忘了又得翻翻翻，特此开始写博客记录我的开发路程，老了，记忆力下降了，再过几年连代码都不会打了。。。 0 0）
 
-进入主题，最近打算用agera运用在新项目上，本来打算rxjava，貌似个个都在用。。但是对比了一下agera和rxjava，感觉在android上使用agera更适合，个人觉得rxjava的确很强大，但是操作符有点乱，什么action1、action2，虽然后面rxjava2更改并加强了概念，还是觉得使用起来有时候会忘记，况且agera跟android生命周期绑定，所以选择了agera
+进入主题，最近打算用 agera 运用在新项目上，本来打算 rxjava，貌似个个都在用。。但是对比了一下 agera 和 rxjava，感觉在 android 上使用 agera 更适合，个人觉得 rxjava 的确很强大，但是操作符有点乱，什么 action1、action2，虽然后面 rxjava2 更改并加强了概念，还是觉得使用起来有时候会忘记，况且 agera 跟 android 生命周期绑定，所以选择了 agera
 
-那么开始吧，先从常用的sqlite入手
+那么开始吧，先从常用的 sqlite 入手
 
 ### 依赖
-Google官网出了一个database的库，就是基于Agera概念封装了一下sqlite，使用方法如下
-``` java
+
+Google 官网出了一个 database 的库，就是基于 Agera 概念封装了一下 sqlite，使用方法如下
+
+```java
 compile 'com.google.android.agera:agera:1.2.0'
 compile 'com.google.android.agera:database:1.2.0'
 ```
+
 Agera Github 地址: [https://github.com/google/agera](https://github.com/google/agera)
 还有中文翻译: [https://github.com/captain-miao/AndroidAgeraTutorial/wiki](https://github.com/captain-miao/AndroidAgeraTutorial/wiki)
 
 <!-- more -->
 
-### 首先是创建一个SQLiteOpenHelper
-这里database库里有个`SqlDatabaseSupplier`帮我们继承了`SQLiteOpenHelper`并且实现了一个`Supplier`接口(这个Supplier接口是使用agera必须实现的)，所以直接继承`SqlDatabaseSupplier`就行了
-``` java
+### 首先是创建一个 SQLiteOpenHelper
+
+这里 database 库里有个`SqlDatabaseSupplier`帮我们继承了`SQLiteOpenHelper`并且实现了一个`Supplier`接口(这个 Supplier 接口是使用 agera 必须实现的)，所以直接继承`SqlDatabaseSupplier`就行了
+
+```java
 public class BikeDBHelper extends SqlDatabaseSupplier {
 
     private static final String DB_NAME = "DB.db";
@@ -52,8 +57,10 @@ public class BikeDBHelper extends SqlDatabaseSupplier {
     }
 }
 ```
+
 下面是`SqlDatabaseSupplier`的源码，很简单
-``` java
+
+```java
 /**
  * Abstract extension of {@link SQLiteOpenHelper} implementing a sql database {@link Supplier} to be
  * used with the {@link SqlDatabaseFunctions}.
@@ -81,9 +88,11 @@ public abstract class SqlDatabaseSupplier extends SQLiteOpenHelper
 }
 ```
 
-### 创建Repository
-在agera最重要的就是这个`Repository`了，先从查询开始
-``` java
+### 创建 Repository
+
+在 agera 最重要的就是这个`Repository`了，先从查询开始
+
+```java
 Repository<Result<List<Bike>>> query = Repositories.repositoryWithInitialValue(Result.<List<Bike>>absent())
                 .observe(onSearchObservable)//这里观察一个按钮，点击按钮就获取一次
                 .onUpdatesPerLoop()//刷新频率
@@ -116,8 +125,10 @@ Repository<Result<List<Bike>>> query = Repositories.repositoryWithInitialValue(R
                 }))
                 .compile();
 ```
+
 重点就是最后一步`thenTransform`，将`SqlRequest`转换成`Result<List<Bike>>`。官网提供了`SqlDatabaseFunctions`类，里面有数据库增删改查四个方法，这里用到的就是查询`databaseQueryFunction`方法，通过传入一个`Supplier<Result<SQLiteDatabase>>`，就是一开始创建的`BikeDBHelper`，还传入一个`Function`将里面处理好的游标`Cursor`提供给我们去获取转换成该游标下的数据，至此转换成最后需要的`Result<List<Bike>>`
-``` java
+
+```java
 /**
    * Creates a sql query {@link Function}.
    */
@@ -130,7 +141,8 @@ Repository<Result<List<Bike>>> query = Repositories.repositoryWithInitialValue(R
 ```
 
 ### push event
-``` java
+
+```java
 @Override
     protected void onResume() {
         super.onResume();
@@ -145,7 +157,8 @@ Repository<Result<List<Bike>>> query = Repositories.repositoryWithInitialValue(R
 ```
 
 ### pull data
-``` java
+
+```java
 @Override
     public void update() {
         query.get().ifSucceededSendTo(this);
@@ -158,6 +171,7 @@ Repository<Result<List<Bike>>> query = Repositories.repositoryWithInitialValue(R
 ```
 
 ### 总结
-创建`Repository`过程中涉及到一个`SqlRequest`，这其实就是一个查询request，针对增删改还有`SqlInsertRequest``SqlDeleteRequest``SqlUpdateRequest`一共四种request，都是通过`SqlRequests`创建。其实整个database库很小，一共也就几个类，所以使用起来还是挺方便的，重点还是得理解Repository。
+
+创建`Repository`过程中涉及到一个`SqlRequest`，这其实就是一个查询 request，针对增删改还有` SqlInsertRequest``SqlDeleteRequest``SqlUpdateRequest `一共四种 request，都是通过`SqlRequests`创建。其实整个 database 库很小，一共也就几个类，所以使用起来还是挺方便的，重点还是得理解 Repository。
 
 ![](1.png)

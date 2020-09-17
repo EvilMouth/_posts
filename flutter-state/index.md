@@ -10,20 +10,20 @@ tags:
 categories: Flutter
 ---
 
-Flutter状态管理介绍
+Flutter 状态管理介绍
 
-## State是什么
+## State 是什么
 
-### 与Android不同之处
+### 与 Android 不同之处
 
-在Android，比如想要动态改变一个TextView的text，则需要在通过id获取TextView，并通过TextView提供的setText(newText)方法设置新的text，随后重新渲染
+在 Android，比如想要动态改变一个 TextView 的 text，则需要在通过 id 获取 TextView，并通过 TextView 提供的 setText(newText)方法设置新的 text，随后重新渲染
 
 ```java
 TextView tv = findViewById(R.id.tv);
 tv.setText("newText");
 ```
 
-而在Flutter中，则是通过setState()去改变
+而在 Flutter 中，则是通过 setState()去改变
 
 ```dart
 String text = 'text';
@@ -35,7 +35,7 @@ setState(() {
 });
 ```
 
-### setState发生了什么
+### setState 发生了什么
 
 ```dart
 @protected
@@ -46,13 +46,13 @@ void setState(VoidCallback fn) {
 }
 ```
 
-setState只是简单的标记一个dirty（而不是Android View主动刷新），真正发起重新渲染的是Flutter的渲染机制，简单流程如下
+setState 只是简单的标记一个 dirty（而不是 Android View 主动刷新），真正发起重新渲染的是 Flutter 的渲染机制，简单流程如下
 
-- Flutter Engine接收到Vsync垂直同步信号
-- 扫描Element树有没有dirty标记的Element
-- rebuild该element
+- Flutter Engine 接收到 Vsync 垂直同步信号
+- 扫描 Element 树有没有 dirty 标记的 Element
+- rebuild 该 element
 
-> Element由Widget生成，每一个Widget对应一个Element
+> Element 由 Widget 生成，每一个 Widget 对应一个 Element
 
 那是否可以像下面这样写，完全可以。但这是一种规范，可以一眼看出哪些状态会被变更
 
@@ -63,25 +63,25 @@ setState(() {});
 
 ### 思考
 
-从上面的例子可以看出Flutter是以状态管理的方式，通过改变状态从而改变UI，这自然引出一个刷新UI效率的问题，因为不像Android通过精准的改变一个目标View去刷新
+从上面的例子可以看出 Flutter 是以状态管理的方式，通过改变状态从而改变 UI，这自然引出一个刷新 UI 效率的问题，因为不像 Android 通过精准的改变一个目标 View 去刷新
 
-## Element是什么
+## Element 是什么
 
-实际Flutter开发页面操作的各种Widget，都会各自生成对应的Element，Element又会根据需要生成RenderObject，所以Flutter会生成三棵树
+实际 Flutter 开发页面操作的各种 Widget，都会各自生成对应的 Element，Element 又会根据需要生成 RenderObject，所以 Flutter 会生成三棵树
 
-> Widget树 -> Element树 -> RenderObject树
+> Widget 树 -> Element 树 -> RenderObject 树
 
-- Widget树就是我们代码层面生成的，Widget只是一个配置文件
-- Element树则是根据Widget树一一对应生成的，主要功能就是管理复用
-- RenderObject树才是实实在在的渲染到屏幕
+- Widget 树就是我们代码层面生成的，Widget 只是一个配置文件
+- Element 树则是根据 Widget 树一一对应生成的，主要功能就是管理复用
+- RenderObject 树才是实实在在的渲染到屏幕
 
-### Element的复用
+### Element 的复用
 
-众所周知在build(context)方法返回Widget，而build会在状态变化时重新被调用，也就是Widget会被不断的重新生成，如果渲染依赖的是Widget，Widget又持有RenderObject也就是渲染数据，那将是大量的内存浪费。
+众所周知在 build(context)方法返回 Widget，而 build 会在状态变化时重新被调用，也就是 Widget 会被不断的重新生成，如果渲染依赖的是 Widget，Widget 又持有 RenderObject 也就是渲染数据，那将是大量的内存浪费。
 
-所以Widget只是一个配置文件，存储的是一些属性，而Element才是真正持有RenderObject的对象
+所以 Widget 只是一个配置文件，存储的是一些属性，而 Element 才是真正持有 RenderObject 的对象
 
-在触发rebuild时，Element的update()会被调用，update()会调用canUpdate()来判断是否可以复用Widget，如果可以复用，则只是更新配置
+在触发 rebuild 时，Element 的 update()会被调用，update()会调用 canUpdate()来判断是否可以复用 Widget，如果可以复用，则只是更新配置
 
 ```dart
 static bool canUpdate(Widget oldWidget, Widget newWidget) {
@@ -92,13 +92,13 @@ static bool canUpdate(Widget oldWidget, Widget newWidget) {
 
 ## 如何控制刷新范围
 
-Flutter内部已经尽可能的优化了渲染流程，但是在实际开发中，依然要注意刷新范围，总结一个点就是
+Flutter 内部已经尽可能的优化了渲染流程，但是在实际开发中，依然要注意刷新范围，总结一个点就是
 
-> setState要写在哪里
+> setState 要写在哪里
 
-### setState刷新的是哪块区域
+### setState 刷新的是哪块区域
 
-再翻出setState的代码
+再翻出 setState 的代码
 
 ```dart
 @protected
@@ -109,17 +109,17 @@ void setState(VoidCallback fn) {
 }
 ```
 
-上面已经介绍到Flutter Engine会rebuild被标记为dirty的element，那在上面setState的代码可以看到，就是当前的element被标记为dirty，也就是说
+上面已经介绍到 Flutter Engine 会 rebuild 被标记为 dirty 的 element，那在上面 setState 的代码可以看到，就是当前的 element 被标记为 dirty，也就是说
 
-> 在哪个Element调用setState，那这个Element包括就会rebuild
+> 在哪个 Element 调用 setState，那这个 Element 包括就会 rebuild
 
 ### 刷新影响
 
-简单看官方Counter例子，该例子发生变化的其实只是某个Text，但是在下面两处注释可以看到实际上整个页面都会rebuild。
+简单看官方 Counter 例子，该例子发生变化的其实只是某个 Text，但是在下面两处注释可以看到实际上整个页面都会 rebuild。
 
-> 当页面比较复杂或者像FutureBuilder这种类型Widget时，就要尽可能控制setState位置
+> 当页面比较复杂或者像 FutureBuilder 这种类型 Widget 时，就要尽可能控制 setState 位置
 
-> 不过通过该例子并不是说这样写是错误的，还记得Element的复用逻辑吗，虽然该例子整个Scaffold以及子Widget都会重新创建，但是实际变化的Element只是其中引用了_counter的Text而已
+> 不过通过该例子并不是说这样写是错误的，还记得 Element 的复用逻辑吗，虽然该例子整个 Scaffold 以及子 Widget 都会重新创建，但是实际变化的 Element 只是其中引用了\_counter 的 Text 而已
 
 ```dart
 class MyHomePage extends StatefulWidget {
@@ -174,9 +174,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
 #### 方式一
 
-首先Flutter是组合Widget的编写方式，StatelessWidget嵌套StatefulWidget再嵌套StatelessWidget，需要状态改变的地方可以重新封装成一个StatefulWidget从而缩小setState影响范围
+首先 Flutter 是组合 Widget 的编写方式，StatelessWidget 嵌套 StatefulWidget 再嵌套 StatelessWidget，需要状态改变的地方可以重新封装成一个 StatefulWidget 从而缩小 setState 影响范围
 
-> 下面例子通过将Text和Button封装到IncrementWidget中，此时调用setState的Element只是IncrementWidget的Element，所以控制了刷新范围
+> 下面例子通过将 Text 和 Button 封装到 IncrementWidget 中，此时调用 setState 的 Element 只是 IncrementWidget 的 Element，所以控制了刷新范围
 
 ```dart
 class IncrementWidget extends StatefulWidget {
@@ -217,9 +217,9 @@ class _IncrementState extends State<IncrementWidget> {
 
 #### 方式二
 
-方式一的例子只是简单的维护一个int类型的状态，当遇到状态更为复杂的情况，比如该状态不仅仅一个地方引用到，在别的地方也需要控制，那自然无法只是封装一个Widget就能搞定的。再拿官方Counter作为例子
+方式一的例子只是简单的维护一个 int 类型的状态，当遇到状态更为复杂的情况，比如该状态不仅仅一个地方引用到，在别的地方也需要控制，那自然无法只是封装一个 Widget 就能搞定的。再拿官方 Counter 作为例子
 
-> 下面的例子的做法并不推荐，中心思想依然是想表达如何缩小setState范围
+> 下面的例子的做法并不推荐，中心思想依然是想表达如何缩小 setState 范围
 
 ```dart
 class MyHomePage extends StatelessWidget {
@@ -266,21 +266,21 @@ class MyHomePage extends StatelessWidget {
 }
 ```
 
-## Provider框架
+## Provider 框架
 
-当业务逻辑越来越复杂，状态管理自然成为至关重要的一个门槛，社区也开源了许多状态管理的框架，例如Bloc、Redux
+当业务逻辑越来越复杂，状态管理自然成为至关重要的一个门槛，社区也开源了许多状态管理的框架，例如 Bloc、Redux
 
-这里主要介绍官方Provider使用以及注意事项
+这里主要介绍官方 Provider 使用以及注意事项
 
-### Provider使用
+### Provider 使用
 
-首先引入Provider库
+首先引入 Provider 库
 
 ```yaml
 provider: ^4.3.1
 ```
 
-官方的Counter例子可以这样写，几个重要点
+官方的 Counter 例子可以这样写，几个重要点
 
 - ChangeNotifier#notifyListeners()
 - ChangeNotifierProvider#create()
@@ -339,17 +339,17 @@ class MyHomePage extends StatelessWidget {
 }
 ```
 
-> context.watch和context.read是通过dart的Extension语法扩展
-> 
-> watch会开启监听，当发生变化时，context（也就是Element）就会rebuild
-> 
-> 还有个context.select<T, R>()允许监听部分数据
+> context.watch 和 context.read 是通过 dart 的 Extension 语法扩展
+>
+> watch 会开启监听，当发生变化时，context（也就是 Element）就会 rebuild
+>
+> 还有个 context.select<T, R>()允许监听部分数据
 
 ### Consumer
 
-上面的例子同样会看到一个问题，就是watch调用的context是整个MyHomePage，所以当count变化时整个MyHomePage会rebuild，依然浪费了不必要的Widget创建，所以Provider提供了Consumer
+上面的例子同样会看到一个问题，就是 watch 调用的 context 是整个 MyHomePage，所以当 count 变化时整个 MyHomePage 会 rebuild，依然浪费了不必要的 Widget 创建，所以 Provider 提供了 Consumer
 
-下面例子通过Consumer包裹Text，其实也就是封装了一个通用的Widget，为的就是缩小刷新范围
+下面例子通过 Consumer 包裹 Text，其实也就是封装了一个通用的 Widget，为的就是缩小刷新范围
 
 ```dart
 children: <Widget>[
@@ -364,7 +364,7 @@ children: <Widget>[
 
 页面再复杂一点，看这么一个例子。
 
-一个评论列表，每个评论都有个点赞按钮，这里就有个注意点 - *局部刷新*。
+一个评论列表，每个评论都有个点赞按钮，这里就有个注意点 - _局部刷新_。
 
 ```dart
 class Comment {
@@ -426,10 +426,10 @@ ChangeNotifierProvider(
 
 重点讲解
 
-1. Selector与Consumer唯一区别是Selector Widget会缓存当前Widget，并在rebuild的时候判断差异才去更新
-2. 第二个Selector包住每个Item，当状态变化时，Selector只会识别到当前的评论数据发生了变化，所以就只会刷新该Item
+1. Selector 与 Consumer 唯一区别是 Selector Widget 会缓存当前 Widget，并在 rebuild 的时候判断差异才去更新
+2. 第二个 Selector 包住每个 Item，当状态变化时，Selector 只会识别到当前的评论数据发生了变化，所以就只会刷新该 Item
 
-看下Selector的build方法
+看下 Selector 的 build 方法
 
 ```dart
 T value; // 缓存数据，该例子指的是Comment
@@ -458,12 +458,12 @@ Widget buildWithChild(BuildContext context, Widget child) {
 }
 ```
 
-### Consumer与Selector区别
+### Consumer 与 Selector 区别
 
-> Consumer - 字面意思消费者，故只要状态变更，就会rebuild
-> 而Selector内部存在缓存，视具体情况rebuild
+> Consumer - 字面意思消费者，故只要状态变更，就会 rebuild
+> 而 Selector 内部存在缓存，视具体情况 rebuild
 
-### 更多Provider
+### 更多 Provider
 
 | name                                                                                                                          | description                                                                                                                                                            |
 | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

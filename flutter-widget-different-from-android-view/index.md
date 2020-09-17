@@ -9,7 +9,7 @@ tags:
 categories: Flutter
 ---
 
-主要列举Android常用的View对应Flutter的Widget
+主要列举 Android 常用的 View 对应 Flutter 的 Widget
 
 ## TextView - Text
 
@@ -34,7 +34,7 @@ Text(
 
 ### 富文本
 
-在Android实现，比如部分文字是可点击的、不同颜色的，是通过Spannable实现，而在Flutter通过组合TextSpan Widget并包裹在Text.rich里面
+在 Android 实现，比如部分文字是可点击的、不同颜色的，是通过 Spannable 实现，而在 Flutter 通过组合 TextSpan Widget 并包裹在 Text.rich 里面
 
 ```dart
 Text.rich(TextSpan())
@@ -42,7 +42,7 @@ Text.rich(TextSpan())
 
 ### 宽高限制
 
-在Android的View中有个通用属性maxWidth，将它设置给TextView可以控制其最大宽度。而在Flutter的Text中并没有该属性，而是通过组合ConstrainedBox控制
+在 Android 的 View 中有个通用属性 maxWidth，将它设置给 TextView 可以控制其最大宽度。而在 Flutter 的 Text 中并没有该属性，而是通过组合 ConstrainedBox 控制
 
 ```dart
 ConstrainedBox(
@@ -70,13 +70,13 @@ RaisedButton(
 )
 ```
 
-RaisedButton并没有提供直接的text属性，而是通过包裹一个child去显示按钮上的文字，而且该child可以是任何Widget而不必须是Text
+RaisedButton 并没有提供直接的 text 属性，而是通过包裹一个 child 去显示按钮上的文字，而且该 child 可以是任何 Widget 而不必须是 Text
 
-> 从而也可看出Flutter的各个Widget都比较轻量，各自担起各自的职责，而不是像Android View一样拥有各种通用属性导致View臃肿
+> 从而也可看出 Flutter 的各个 Widget 都比较轻量，各自担起各自的职责，而不是像 Android View 一样拥有各种通用属性导致 View 臃肿
 
 ### 普通文本如何点击
 
-在Android中，TextView继承自View，而View都可以设置点击事件。而在Flutter中，Text是没有提供像RaisedButton的onPressed回调的，这样说明各个Widget只负责各自的功能，那Text如何实现点击呢
+在 Android 中，TextView 继承自 View，而 View 都可以设置点击事件。而在 Flutter 中，Text 是没有提供像 RaisedButton 的 onPressed 回调的，这样说明各个 Widget 只负责各自的功能，那 Text 如何实现点击呢
 
 ```dart
 GestureDetector(
@@ -106,7 +106,7 @@ TextField(
 )
 ```
 
-> 这里有必要介绍下controller，controller这个概念在Flutter的很多Widget都会出现，在TextField旨在控制输入框的文本、光标等。
+> 这里有必要介绍下 controller，controller 这个概念在 Flutter 的很多 Widget 都会出现，在 TextField 旨在控制输入框的文本、光标等。
 
 ## ImageView - Image
 
@@ -121,19 +121,19 @@ TextField(
 Image(image: AssetImage('images/ic_launcher.png'))
 ```
 
-### ImageProvider是什么
+### ImageProvider 是什么
 
-上面Flutter Image例子中image属性实际是一个ImageProvider对象，主要是为Image提供图片，常用的有
+上面 Flutter Image 例子中 image 属性实际是一个 ImageProvider 对象，主要是为 Image 提供图片，常用的有
 
 - AssetImage
 - FileImage
 - NetworkImage
 
-> ImageProvider内部还实现了图片的缓存
+> ImageProvider 内部还实现了图片的缓存
 
 ### 控制长宽比例
 
-利用AspectRatio
+利用 AspectRatio
 
 ```dart
 AspectRatio(
@@ -240,11 +240,11 @@ Row(children: [
 ])
 ```
 
-> 在Flutter中，线性布局以Column和Row实现，其中LinearLayout的weight在Flutter以Expanded代替，Expanded继承Flexible。Spacer也是个Expanded，只是child是个空Widget
+> 在 Flutter 中，线性布局以 Column 和 Row 实现，其中 LinearLayout 的 weight 在 Flutter 以 Expanded 代替，Expanded 继承 Flexible。Spacer 也是个 Expanded，只是 child 是个空 Widget
 
 ## FrameLayout - Stack
 
-用Stack实现堆叠的视图
+用 Stack 实现堆叠的视图
 
 ```dart
 Stack(
@@ -271,17 +271,17 @@ Stack(
 )
 ```
 
-### margin属性去哪了
+### margin 属性去哪了
 
-Android Layout中有个LayoutParams对象，一般都是MarginLayoutParams，子View可以使用margin属性去实现一些间距
+Android Layout 中有个 LayoutParams 对象，一般都是 MarginLayoutParams，子 View 可以使用 margin 属性去实现一些间距
 
-> 而在Flutter中，则是通过嵌套Padding、Container等Widget
-> 
-> 或是在Row中，两个Widget直接加一个SizeBox(width: 10)来实现
+> 而在 Flutter 中，则是通过嵌套 Padding、Container 等 Widget
+>
+> 或是在 Row 中，两个 Widget 直接加一个 SizeBox(width: 10)来实现
 
 ## RelativeLayout - 组合
 
-在Flutter中，是没有RelativeLayout以及其各种below、above等属性。而是通过组合各种上面所说的Widget去实现（Container、Padding、Row、Column、Stack等等）
+在 Flutter 中，是没有 RelativeLayout 以及其各种 below、above 等属性。而是通过组合各种上面所说的 Widget 去实现（Container、Padding、Row、Column、Stack 等等）
 
 ```dart
 Row(

@@ -38,7 +38,7 @@ static ThemeData of(BuildContext context, { bool shadowThemeOnly = false }) {
 
 Theme Widget 通过 InheritedTheme（继承于 InheritedWidget）去共享 ThemeData，具体则是利用 BuildContext.dependOnInheritedWidgetOfExactType 实现。
 
-> dependOnInheritedWidgetOfExactType 会使 子Widget 在 ThemeData 数据变动时**重新构建**
+> dependOnInheritedWidgetOfExactType 会使 子 Widget 在 ThemeData 数据变动时**重新构建**
 
 再继续往下看 dependOnInheritedWidgetOfExactType 做了什么，BuildContext.dependOnInheritedWidgetOfExactType 是一个空方法，具体在 Element 实现功能。
 
@@ -77,15 +77,15 @@ InheritedWidget dependOnInheritedElement(InheritedElement ancestor, { Object asp
 }
 ```
 
-通过上面的源码可以看到有两个重要的成员 _inheritedWidgets 以及 _dependencies。_dependencies 涉及的是依赖更新，不是当前篇章的内容，_inheritedWidgets 才是能够**向下传递数据**的关键。
+通过上面的源码可以看到有两个重要的成员 \_inheritedWidgets 以及 \_dependencies。\_dependencies 涉及的是依赖更新，不是当前篇章的内容，\_inheritedWidgets 才是能够**向下传递数据**的关键。
 
 先回想以下 Theme.of(context) 中的 context 是什么
 
-在 子Widget 中调用 Theme.of(context) 中，context 指的就是 当前子Widget对应的Element，也就是说 context.dependOnInheritedWidgetOfExactType 就是对 当前子Element 的调用，那自然 _inheritedWidgets 就是 当前子Element 的成员。
+在 子 Widget 中调用 Theme.of(context) 中，context 指的就是 当前子 Widget 对应的 Element，也就是说 context.dependOnInheritedWidgetOfExactType 就是对 当前子 Element 的调用，那自然 \_inheritedWidgets 就是 当前子 Element 的成员。
 
-> 向下传递就是让所以 子Widget 都持有 祖先共享数据 的一份拷贝指向，使得 子Widget 在获取 祖先共享数据 时十分方便快捷
+> 向下传递就是让所以 子 Widget 都持有 祖先共享数据 的一份拷贝指向，使得 子 Widget 在获取 祖先共享数据 时十分方便快捷
 
-那为何 当前子Element 的 _inheritedWidgets 会有 **祖先** 的数据呢，答案就在 Element 本身一个方法上
+那为何 当前子 Element 的 \_inheritedWidgets 会有 **祖先** 的数据呢，答案就在 Element 本身一个方法上
 
 ```dart
 /// Element 的实现
@@ -107,14 +107,14 @@ void _updateInheritance() {
 }
 ```
 
-- _updateInheritance 会在 Element 处于激活状态下被调用
-- _updateInheritance 会将 父Element 的 _inheritedWidgets 赋值给 当前Element 的 _inheritedWidgets
-- InheritedElement 重写 _updateInheritance，并将自己写进 _inheritedWidgets
+- \_updateInheritance 会在 Element 处于激活状态下被调用
+- \_updateInheritance 会将 父 Element 的 \_inheritedWidgets 赋值给 当前 Element 的 \_inheritedWidgets
+- InheritedElement 重写 \_updateInheritance，并将自己写进 \_inheritedWidgets
 - 以此完成 向下传递、数据共享
 
-## _dependencies 的作用
+## \_dependencies 的作用
 
-回到刚才两个重要成员中的另一个成员 _dependencies，_dependencies 起到的作用是当 祖先共享数据 发现变化时，子Widget 就会更新的作用
+回到刚才两个重要成员中的另一个成员 \_dependencies，\_dependencies 起到的作用是当 祖先共享数据 发现变化时，子 Widget 就会更新的作用
 
 ```dart
 _dependencies ??= HashSet<InheritedElement>();
@@ -122,7 +122,7 @@ _dependencies.add(ancestor);
 ancestor.updateDependencies(this, aspect);
 ```
 
-- _dependencies.add(ancestor); 也就是将 祖先元素 作为依赖项存储
+- \_dependencies.add(ancestor); 也就是将 祖先元素 作为依赖项存储
 - ancestor.updateDependencies(this, aspect); 则是 祖先元素 将 子元素 作为依赖者存储
 - 两者互相持有引用
 
@@ -173,7 +173,7 @@ void didChangeDependencies() {
 }
 ```
 
-> 一开始 InheritedWidget 没有任何 依赖者，当有 子Widget 请求了数据（Theme.of）之后，便使得 祖先元素 和 子元素 互相绑定
+> 一开始 InheritedWidget 没有任何 依赖者，当有 子 Widget 请求了数据（Theme.of）之后，便使得 祖先元素 和 子元素 互相绑定
 
 > 其实还有一种获取 祖先共享数据 的方法，并且不产生依赖关系 - BuildContext.getElementForInheritedWidgetOfExactType
 
@@ -188,7 +188,7 @@ InheritedWidget dependOnInheritedElement(InheritedElement ancestor, { Object asp
 
 > aspect 提供颗粒化共享数据
 
-假如一个祖先提供A、B两个数据，他有两个孩子，孩子C引用数据A，孩子D引用数据B。当只有数据A发生变化时，其实只需要重新构建孩子C，aspect就是提供这么一个过滤功能
+假如一个祖先提供 A、B 两个数据，他有两个孩子，孩子 C 引用数据 A，孩子 D 引用数据 B。当只有数据 A 发生变化时，其实只需要重新构建孩子 C，aspect 就是提供这么一个过滤功能
 
 aspect 在 InheritedWidget 并没有使用，而是在 InheritedModel 作用体现，InheritedModel 可以通过 [官方视频](https://www.youtube.com/watch?v=ml5uefGgkaA) 了解
 
@@ -230,7 +230,7 @@ bool updateShouldNotifyDependent(ABModel old, Set<String> aspects) {
 }
 ```
 
-最后在 子Widget 获取 祖先共享数据 时需要通过 InheritedModel.inheritFrom 去获取
+最后在 子 Widget 获取 祖先共享数据 时需要通过 InheritedModel.inheritFrom 去获取
 
 ```dart
 class ABModel extends InheritedModel<String> {

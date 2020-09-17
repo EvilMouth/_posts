@@ -8,14 +8,15 @@ tags:
 categories: Android
 ---
 
-提供一种链式结构AccessibilityService的方案，相比于正常使用AccessibilityService，有着几大优点：结构清晰、调用链一目了然、方便调试等
+提供一种链式结构 AccessibilityService 的方案，相比于正常使用 AccessibilityService，有着几大优点：结构清晰、调用链一目了然、方便调试等
 
 <!-- More -->
 
 ## 0x00 AccessibilityService
 
 最原始的写法，就是在`onAccessibilityEvent(AccessibilityEvent)`回调中根据`eventType`处理相应的动作
-``` java
+
+```java
 @Override
 public void onAccessibilityEvent(AccessibilityEvent event) {
     switch (event.getEventType()) {
@@ -35,7 +36,7 @@ public void onAccessibilityEvent(AccessibilityEvent event) {
 
 引入了`Situation`概念，将每种变化通过链式结构连接起来，只需要关心 **当前变化的判定**、**当前变化的处理**、**下一步变化的预判**
 
-``` java
+```java
 Situation.java
 
 public interface Situation {

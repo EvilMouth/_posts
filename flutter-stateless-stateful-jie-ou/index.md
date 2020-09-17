@@ -11,9 +11,9 @@ categories: Flutter
 
 `StatelessWidget`和`StatefulWidget`是`flutter`的基础组件，日常开发中自定义`Widget`都是选择继承这两者之一。
 
-两者的区别在于`状态的改变`，`StatelessWidget`面向那些始终不变的UI控件，比如标题栏中的标题；而`StatefulWidget`则是面向可能会改变UI状态的控件，比如有点击反馈的按钮。
+两者的区别在于`状态的改变`，`StatelessWidget`面向那些始终不变的 UI 控件，比如标题栏中的标题；而`StatefulWidget`则是面向可能会改变 UI 状态的控件，比如有点击反馈的按钮。
 
-`StatelessWidget`就没什么好研究的了，`StatefulWidget`的创建需要指定一个`State`，在需要更新UI的时候调用`setState(VoidCallback fn)`，并在`VoidCallback`中改变一些变量数值等，组件会重新`build`以达到刷新状态也就是刷新UI的效果。
+`StatelessWidget`就没什么好研究的了，`StatefulWidget`的创建需要指定一个`State`，在需要更新 UI 的时候调用`setState(VoidCallback fn)`，并在`VoidCallback`中改变一些变量数值等，组件会重新`build`以达到刷新状态也就是刷新 UI 的效果。
 
 官方有个`StatefulWidget`的例子，通过点击按钮使屏幕上的`Text`数值逐渐增长，可以很好理解`StatefulWidget`的使用
 
@@ -68,6 +68,7 @@ class _CounterState extends State<Counter> {
 ## 解耦
 
 上面的例子比较简单，当层级多、状态多的情况下，这样的代码会导致阅读性、扩展性较低的不友好情况发生。代码整洁、代码解耦在日常开发中都非常重要，官方也是非常注重这一点，也提供了思路，将按钮和文本控件从`Counter`分离，`Counter`负责更新状态，按钮和文本控件只负责显示，这样达到了解耦，保持代码整洁，扩展性也对应提高。
+
 ```dart
 class CounterDisplay extends StatelessWidget {
   CounterDisplay({this.count});

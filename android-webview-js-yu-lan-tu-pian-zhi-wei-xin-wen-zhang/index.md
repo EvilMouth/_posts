@@ -4,8 +4,8 @@ title: Android WebView注入Js预览图片 - 微信公众号文章
 date: 2018-08-21 16:45:03
 updated: 2018-08-21 16:45:03
 tags:
- - webView
- - js
+  - webView
+  - js
 categories: Android
 ---
 
@@ -23,41 +23,46 @@ categories: Android
 
 ## 0x01 分析
 
-然而在微信客户端可以正常预览，推测微信应该是在别的属性进行获取，定位到具体的标签看到文章中的`img`标签都定义了`data-src`、`data-type`属性（这是自定义属性，区分src，方便js调用）
-``` html
-<img class="img_loading"
-data-ratio="0.53375"
-data-src="https://mmbiz.qpic.cn/mmbiz_jpg/h5tEWrMy7mrq9iclTia1O8M2C5Se7nr5TgN6IibURS7YYpCSTwT0U5KUhOmGrxusN8iaQKrFDjtTBaMox6Dgp2Hfbg/640?wx_fmt=jpeg"
-data-type="jpeg"
-data-w="800"
-_width="677px"
-src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
-style="width: 647px !important; height: 345.336px !important;">
+然而在微信客户端可以正常预览，推测微信应该是在别的属性进行获取，定位到具体的标签看到文章中的`img`标签都定义了`data-src`、`data-type`属性（这是自定义属性，区分 src，方便 js 调用）
+
+```html
+<img
+  class="img_loading"
+  data-ratio="0.53375"
+  data-src="https://mmbiz.qpic.cn/mmbiz_jpg/h5tEWrMy7mrq9iclTia1O8M2C5Se7nr5TgN6IibURS7YYpCSTwT0U5KUhOmGrxusN8iaQKrFDjtTBaMox6Dgp2Hfbg/640?wx_fmt=jpeg"
+  data-type="jpeg"
+  data-w="800"
+  _width="677px"
+  src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg=="
+  style="width: 647px !important; height: 345.336px !important;"
+/>
 ```
 
 ## 0x02 解决
 
 现在知道问题所在，针对`data-x`自定义属性可以通过`dataset`获得，之所以判断`dataset.type !== "gif"`是为了过滤掉`gif`，如果你想显示`gif`，可以去掉
-``` js
+
+```js
 function wxImgClick() {
-    let objs = document.getElementsByTagName("img");
-    let imgs = [];
-    for (let i = 0; i < objs.length; i++) {
-        let dataset = objs[i].dataset;
-        if (dataset.src && dataset.type !== "gif") {
-            let index = imgs.push(dataset.src) - 1;
-            objs[i].onclick = function () {
-                window.xxxxxx.openImage(imgs, index)
-            }
-        }
+  let objs = document.getElementsByTagName("img")
+  let imgs = []
+  for (let i = 0; i < objs.length; i++) {
+    let dataset = objs[i].dataset
+    if (dataset.src && dataset.type !== "gif") {
+      let index = imgs.push(dataset.src) - 1
+      objs[i].onclick = function () {
+        window.xxxxxx.openImage(imgs, index)
+      }
     }
+  }
 }
 ```
 
 ## 0x03 完整例子
 
 可以在`webView`创建之时调用`addJavascriptInterface`进行监听
-``` java
+
+```java
 addJavascriptInterface(new JavascriptInterface(getContext().getApplicationContext()), "xxxxxx");
 
 private class JavascriptInterface {
@@ -75,7 +80,8 @@ private class JavascriptInterface {
 ```
 
 在合适的时候注入`Js`，我这里是在`onPageFinished`
-``` java
+
+```java
 @Override
 public void onPageFinished(WebView view, String url) {
     super.onPageFinished(view, url);
@@ -105,4 +111,4 @@ private void addWXImgClickJs() {
 }
 ```
 
-> evaluateJavascript()是比loadUrl()更高效的注入Js的做法，还支持回调，推荐
+> evaluateJavascript()是比 loadUrl()更高效的注入 Js 的做法，还支持回调，推荐

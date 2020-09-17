@@ -4,19 +4,19 @@ title: 更简单的方式上传jcenter
 date: 2018-08-10 16:52:21
 updated: 2018-08-10 16:52:21
 tags:
- - jcenter
- - novoda
+  - jcenter
+  - novoda
 categories: Maven
 ---
 
 整理了一下`novoda`使用流程和步骤，结合`Android`项目结构，整合出一份通用并且更简单的使用方式
 
 > 一键上传
-> 支持多Library上传
+> 支持多 Library 上传
 
 <!-- More -->
 
-## 0x00 注册bintray
+## 0x00 注册 bintray
 
 注册`bintray`这个步骤就不打扰了[https://blog.zyhang.com/maven-jcenter/](https://blog.zyhang.com/maven-jcenter/)
 
@@ -30,16 +30,17 @@ categories: Maven
 
 ### 需要修改的文件
 
-- 根build.gradle - 添加novoda依赖
-- 根gradle.properties - 配置仓库通用属性
-- 仓库build.gradle - 添加fuck命令依赖
-- 仓库gradle.properties - 配置仓库具体属性
-- 根local.properties - 配置bintray密匙
+- 根 build.gradle - 添加 novoda 依赖
+- 根 gradle.properties - 配置仓库通用属性
+- 仓库 build.gradle - 添加 fuck 命令依赖
+- 仓库 gradle.properties - 配置仓库具体属性
+- 根 local.properties - 配置 bintray 密匙
 
-### 添加novoda依赖
+### 添加 novoda 依赖
 
-在项目`根build.gradle`添加novoda依赖
-``` groovy
+在项目`根build.gradle`添加 novoda 依赖
+
+```groovy
 buildscript {
     repositories {
         // novoda依赖需要依赖jcenter
@@ -55,7 +56,8 @@ buildscript {
 ### 配置仓库通用属性
 
 在项目`根gradle.properties`配置仓库通用属性
-``` properties
+
+```properties
 POM_GROUP_ID=com.zyhang
 POM_PUBLISH_VERSION=2.0.0-alpha
 
@@ -69,17 +71,19 @@ POM_REPOSITORY=https://github.com/izyhang/Damon.git
 
 ### 配置仓库具体属性
 
-在具体仓库（也就是Library Module）`gradle.properties`配置仓库具体属性
-``` properties
+在具体仓库（也就是 Library Module）`gradle.properties`配置仓库具体属性
+
+```properties
 POM_UPLOAD_NAME=Damon
 POM_ARTIFACT_ID=damon
 POM_DESC=mvp framework
 ```
 
-### 添加fuck命令依赖
+### 添加 fuck 命令依赖
 
-在具体仓库（也就是Library Module）`build.gradle`添加fuck命令依赖
-``` groovy
+在具体仓库（也就是 Library Module）`build.gradle`添加 fuck 命令依赖
+
+```groovy
 apply plugin: 'com.android.library'
 
 android {
@@ -95,10 +99,11 @@ android {
 apply from: 'https://raw.githubusercontent.com/izyhang/novoda-push/master/gradle/push.gradle'
 ```
 
-### 配置bintray密匙
+### 配置 bintray 密匙
 
 在根`local.properties`配置`bintray`密匙
-``` properties
+
+```properties
 bintray.user=***
 bintray.apikey=******
 ```
@@ -113,6 +118,7 @@ bintray.apikey=******
 ## 0x03 一些坑
 
 - 使用`kotlin`编写的项目可能会遇到`.kt`文件无法生成`javadoc`情况，可以在`根build.gradle`文件下添加
-``` groovy
+
+```groovy
 tasks.getByPath(":your module:releaseAndroidJavadocs").enabled = false
 ```

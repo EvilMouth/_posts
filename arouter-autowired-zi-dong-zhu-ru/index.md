@@ -12,11 +12,11 @@ categories: Android
 
 ## 前言
 
-ARouter有一个@Autowired的注解，能自动帮我们赋值一些变量，例如
+ARouter 有一个@Autowired 的注解，能自动帮我们赋值一些变量，例如
 
 <!-- More -->
 
-``` java
+```java
 public class MainFragment {
     @Autowired
     String name;
@@ -30,14 +30,16 @@ public class MainFragment {
 }
 ```
 
-通过`Arouter.getInstance().inject(this);`就能将Activity传输的一些值自动帮我们赋值上对应变量，省去我们手动去调用`getIntent().getString(xxx)`
+通过`Arouter.getInstance().inject(this);`就能将 Activity 传输的一些值自动帮我们赋值上对应变量，省去我们手动去调用`getIntent().getString(xxx)`
 
 ## inject(this)
 
-那么看下它做了什么，翻了几下发现，ARouter会做以下几步操作
-1、APT编译期间扫描@Autowired字段的文件并生成MainFragment$$ARouter$$Autowired文件
-- $$ARouter$$Autowired类实现了ISyringe接口，拥有一个inject(Object)的方法，这里面就是赋值的代码
-``` java
+那么看下它做了什么，翻了几下发现，ARouter 会做以下几步操作
+1、APT 编译期间扫描@Autowired 字段的文件并生成 MainFragment$$ARouter$$Autowired 文件
+
+- $$ARouter$$Autowired 类实现了 ISyringe 接口，拥有一个 inject(Object)的方法，这里面就是赋值的代码
+
+```java
 public class MainFragment$$ARouter$$Autowired implements ISyringe {
   private SerializationService serializationService;
 
@@ -49,8 +51,10 @@ public class MainFragment$$ARouter$$Autowired implements ISyringe {
   }
 }
 ```
-2、Arouter.getInstance().inject(this);则是通过反射创建了$$ARouter$$Autowired类并调用inject方法实现自动赋值
-``` java
+
+2、Arouter.getInstance().inject(this);则是通过反射创建了$$ARouter$$Autowired 类并调用 inject 方法实现自动赋值
+
+```java
 @Override
     public void autowire(Object instance) {
         String className = instance.getClass().getName();
@@ -74,30 +78,31 @@ public class MainFragment$$ARouter$$Autowired implements ISyringe {
 众所周知反射的性能是差的，那么有什么办法不反射吗，答案是有的，那就是直接
 `new MainFragment$$ARouter$$Autowired().inject(this);`
 
-然而在代码没编译之前，MainFragment$$ARouter$$Autowired这个类是还没生成的，自然无法直接调用。况且这样还有个问题，那就是每个Activity或Fragment生成的类都是唯一的，我们也不可能在每个地方手动new+inject，这样还不如反射来的方便
+然而在代码没编译之前，MainFragment$$ARouter$$Autowired 这个类是还没生成的，自然无法直接调用。况且这样还有个问题，那就是每个 Activity 或 Fragment 生成的类都是唯一的，我们也不可能在每个地方手动 new+inject，这样还不如反射来的方便
 
-> 这时候就需要Android提供的工具Transform了
+> 这时候就需要 Android 提供的工具 Transform 了
 
-## Transform开发
+## Transform 开发
 
 ### 核心原理
-> 利用Transform，在编译期间往使用了@Autowired的Activity或Fragment类的onCreate(Bundle)方法自动注入`new xxx$$ARouter$$Autowired().inject(this);`这行代码
+
+> 利用 Transform，在编译期间往使用了@Autowired 的 Activity 或 Fragment 类的 onCreate(Bundle)方法自动注入`new xxx$$ARouter$$Autowired().inject(this);`这行代码
 
 ### 过程
 
-1、扫描整个项目里名称后缀为$$ARouter$$Autowired的class文件
-2、以此找到对应的Activity或Fragment文件
-3、利用ASM库对该文件进行访问
-4、访问到onCreate(Bundle)方法时，在super.onCreate前写入inject方法
+1、扫描整个项目里名称后缀为$$ARouter$$Autowired 的 class 文件
+2、以此找到对应的 Activity 或 Fragment 文件
+3、利用 ASM 库对该文件进行访问
+4、访问到 onCreate(Bundle)方法时，在 super.onCreate 前写入 inject 方法
 
 ### 结果
 
-编译完成后，可以通过apk包分析或这在app\build\intermediates\transforms目录下找到MainFragment文件编译后的代码，可以看见MainFragment的onCreate方法里面多了一行代码，就是上面所想要的
+编译完成后，可以通过 apk 包分析或这在 app\build\intermediates\transforms 目录下找到 MainFragment 文件编译后的代码，可以看见 MainFragment 的 onCreate 方法里面多了一行代码，就是上面所想要的
 `new MainFragment$$ARouter$$Autowired().inject(this);`
 
 ## 再次思考
 
-虽然利用Transform可以解决反射的问题，但无疑也带来了一个问题，就是项目协作上，其他人不了解的话会很奇怪。我的做法是在$$ARouter$$Autowired类加了行注释，起码别人在看这个类的时候能知道什么时候会inject。
+ 虽然利用 Transform 可以解决反射的问题，但无疑也带来了一个问题，就是项目协作上，其他人不了解的话会很奇怪。我的做法是在$$ARouter$$Autowired 类加了行注释，起码别人在看这个类的时候能知道什么时候会 inject。
 至于怎么加这行注释，就靠各位发挥了
 
 本项目例子已开源[Github](https://github.com/izyhang/ARouter-AutowiredTransform)

@@ -12,23 +12,26 @@ categories: Android
 
 <!-- More -->
 
-偷偷截下Google Play的图
+偷偷截下 Google Play 的图
 ![](1.png)
-如上图所示，上面的banner就是中对齐的效果，下面的游戏列表就是左对齐的效果
+如上图所示，上面的 banner 就是中对齐的效果，下面的游戏列表就是左对齐的效果
 
-官网support包提供了`SnapHelper`帮助实现这样的效果
-``` java
+官网 support 包提供了`SnapHelper`帮助实现这样的效果
+
+```java
 public abstract class SnapHelper extends RecyclerView.OnFlingListener
 ```
 
 使用方法很简单，官方已经帮我们实现了一个`LinearSnapHelper`供我们直接使用，运行后是中对齐的效果
-``` java
+
+```java
 SnapHelper snapHelper = new LinearSnapHelper();
 snapHelper.attachToRecyclerView(recyclerview);
 ```
 
 官方没有提供左对齐，想要左对齐需要自己动手，继承`LinearSnapHelper`并重写`calculateDistanceToFinalSnap`和`findSnapView`方法
-``` java
+
+```java
 public class FirstItemSnapHelper extends LinearSnapHelper {
     private OrientationHelper mVerticalHelper, mHorizontalHelper;
 
@@ -116,7 +119,9 @@ public class FirstItemSnapHelper extends LinearSnapHelper {
     }
 }
 ```
+
 使用方法也是去`attachToRecyclerView`，最终实现左对齐的效果
 
 ##### 使用注意
-`SnapHelper`一般项目需要都是用于水平列表，但其实`SnapHelper`同样适用于垂直列表，需要注意的一点是，`SnapHelper`具体原理是根据判断哪个item到达指定位置的偏差小而去滑动的，当item的宽度或高度不够大的情况下（需要尽可能大于半屏），滑动到最后一个item会因为偏差不够前一个item大而导致选择了前一个item去移动。官方提供的`LinearSnapHelper`就是这样，如果item宽度不够大，会出现的情况是当滑动最后一松手，会判定倒数第二个item偏差小而选择倒数第二个item为`SnapView`去滑动到中间，导致最后一个item永远无法显示全。而本文提供的`FirstItemSnapHelper`虽然有相关处理是否到达最后一个item，当也许不是适合每个需求，具体还得根据需求去修改。
+
+`SnapHelper`一般项目需要都是用于水平列表，但其实`SnapHelper`同样适用于垂直列表，需要注意的一点是，`SnapHelper`具体原理是根据判断哪个 item 到达指定位置的偏差小而去滑动的，当 item 的宽度或高度不够大的情况下（需要尽可能大于半屏），滑动到最后一个 item 会因为偏差不够前一个 item 大而导致选择了前一个 item 去移动。官方提供的`LinearSnapHelper`就是这样，如果 item 宽度不够大，会出现的情况是当滑动最后一松手，会判定倒数第二个 item 偏差小而选择倒数第二个 item 为`SnapView`去滑动到中间，导致最后一个 item 永远无法显示全。而本文提供的`FirstItemSnapHelper`虽然有相关处理是否到达最后一个 item，当也许不是适合每个需求，具体还得根据需求去修改。

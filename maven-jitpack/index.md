@@ -14,29 +14,35 @@ categories: Maven
 
 <!-- More -->
 
-## 添加maven插件
+## 添加 maven 插件
+
 在根`build.gradle`配置插件
+
 ```
 buildscript {
   dependencies {
     classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5' // Add this line
 ```
 
-## 配置library
+## 配置 library
+
 在`library`的`build.gradle`添加
+
 ```
-apply plugin: 'com.github.dcendents.android-maven'  
+apply plugin: 'com.github.dcendents.android-maven'
 
  group='com.github.YourUsername'
 ```
 
-## 创建一个release
+## 创建一个 release
+
 为你的`Github`仓库创建一个`release`
 ![](1.png)
 ![](2.png)
 ![](3.png)
 
 ## 拉依赖
+
 ```
 allprojects {
  repositories {
@@ -45,7 +51,9 @@ allprojects {
  }
 }
 ```
+
 最后
+
 ```
 dependencies {
     compile 'com.github.YourUsername:YourProjectName:YourProjectVersion'

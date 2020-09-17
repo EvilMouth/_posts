@@ -8,15 +8,17 @@ tags:
 categories: Java
 ---
 
-比较出名的两个方案jxi和poi，由于jxi只适用Excel 2003，所以肯定选择poi，但是poi又跟android不兼容，不能通过maven依赖方式拉取，所以只能自己重新打包jar文件并导入到项目中才可以使用，在网上找了下找到个3-12版的，现在官网最新的是3-16，不过之前由于急着弄这个功能就没管了，后面找个时间自己打包下，jar包可以在下面链接找到
+比较出名的两个方案 jxi 和 poi，由于 jxi 只适用 Excel 2003，所以肯定选择 poi，但是 poi 又跟 android 不兼容，不能通过 maven 依赖方式拉取，所以只能自己重新打包 jar 文件并导入到项目中才可以使用，在网上找了下找到个 3-12 版的，现在官网最新的是 3-16，不过之前由于急着弄这个功能就没管了，后面找个时间自己打包下，jar 包可以在下面链接找到
 
 [https://github.com/izyhang/ExcelPoi](https://github.com/izyhang/ExcelPoi)
 
 <!-- More -->
 
-### 读写Excel
+### 读写 Excel
+
 读写操作还是很常规的
-``` java
+
+```java
 InputStream is = new FileInputStream(filePath);
 Workbook wookbook = new XSSFWorkbook(is);//Excel 2007
 Sheet sheet = wookbook.getSheetAt(0);
@@ -26,7 +28,8 @@ Cell cell = row.getCell(0);
 ```
 
 ### 取单元格内容
-``` java
+
+```java
 private static String getCellFormatValue(Cell cell) throws Exception {
         String value = "";
         // 判断当前Cell的Type
@@ -57,4 +60,5 @@ private static String getCellFormatValue(Cell cell) throws Exception {
         return value;
     }
 ```
+
 这里读纯数字用的是`NumberToTextConverter.toText`，具体看实际需求

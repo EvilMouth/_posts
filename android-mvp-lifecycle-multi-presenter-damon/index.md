@@ -10,9 +10,9 @@ categories: Android
 
 结合自己对`MVP`的理解，加上个人习惯，整理出这么一份`Android MVP`框架
 
-- 通过注解动态注入Presenter
-- Presenter拥有完整生命周期
-- 支持多Presenter注入
+- 通过注解动态注入 Presenter
+- Presenter 拥有完整生命周期
+- 支持多 Presenter 注入
 - 状态复原
 
 <!-- More -->
@@ -26,10 +26,11 @@ categories: Android
 
 先介绍一下`Damon`的简单使用
 
-### 新建View、Presenter
+### 新建 View、Presenter
 
 `Presenter`具有与`Activity`一样的生命周期，这里展示部分生命周期
-``` kotlin
+
+```kotlin
 interface MainView {
     fun log(msg: String)
 }
@@ -57,10 +58,11 @@ class MainPresenter : BasePresenter<MainView>() {
 }
 ```
 
-### 修改MainActivity
+### 修改 MainActivity
 
 为`MainActivity`绑定`Presenter`，想要拿到`Presenter`通过`@BindPresenter`获取
-``` kotlin
+
+```kotlin
 @RequiresPresenter(MainPresenter::class)
 class MainActivity : BaseActivity(), MainView {
     @BindPresenter
@@ -78,9 +80,9 @@ class MainActivity : BaseActivity(), MainView {
 }
 ```
 
-### 多Presenter注入
+### 多 Presenter 注入
 
-``` kotlin
+```kotlin
 @RequiresPresenter(value = [MainPresenter::class, SecondPresenter::class])
 class MainActivity : BaseActivity(), MainView, SecondView {
     @BindPresenter
@@ -98,12 +100,13 @@ class MainActivity : BaseActivity(), MainView, SecondView {
 
 下面介绍一下`Damon`的工作原理
 
-### Presenter的动态注入和赋值
+### Presenter 的动态注入和赋值
 
 用注解代替手动实例化`Presenter`更加方便，并且在封装好的`Activity`实现了状态恢复，避免重复创建`Presenter`
 
 在界面创建之时会传入当前`class`到`ReflectionPresenterFactory`，通过`cls.getAnnotation`拿到`@RequiresPresenter`注解并保存，在这里也对当前`class`有`@BindPresenter`注解的成员进行保存
-``` java
+
+```java
 @Nullable
 public static ReflectionPresenterFactory fromViewClass(Object host, Class<?> cls) {
     RequiresPresenter annotation = cls.getAnnotation(RequiresPresenter.class);
@@ -125,12 +128,13 @@ public static ReflectionPresenterFactory fromViewClass(Object host, Class<?> cls
 }
 ```
 
-### Presenter的创建
+### Presenter 的创建
 
 上面讲过`Damon`的`Presenter`是具有完整生命周期的，看到封装的`Activity` **[MvpAppCompatActivity.java](https://github.com/izyhang/Damon/blob/feature%2Fmulti-presenter/damon/src/main/java/com/zyhang/damon/support/MvpAppCompatActivity.java)**
 
 在`Activity`的生命周期通过`PresenterLifecycleDelegate`去控制`Presenter`的方法调用，赋予其生命周期。其中还重载了`onSaveInstanceState`辅助`Presenter`状态恢复机制
-``` java
+
+```java
 public class MvpAppCompatActivity extends AppCompatActivity implements MvpView {
 
     private static final String PRESENTER_STATE_KEY = "presenter_state";
@@ -184,7 +188,8 @@ public class MvpAppCompatActivity extends AppCompatActivity implements MvpView {
 ### PresenterLifecycleDelegate
 
 最重要的就是此类，连接`Activity`和`Presenter`的枢纽，控制`Presenter`的创建、恢复、生命周期
-``` java
+
+```java
 public class PresenterLifecycleDelegate {
 
     private static final String PRESENTER_KEY = "presenter - ";

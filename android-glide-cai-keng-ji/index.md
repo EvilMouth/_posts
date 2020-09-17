@@ -8,14 +8,15 @@ tags:
 categories: Android
 ---
 
-在最新的`Glide 4.x`中，应该是`4.x`开始吧，官方改变了`Glide`的请求结构，许多api包括常用`centerCrop()`、`error()`、`placeholder()`等都需要通过`RequestOptions`去配置，从而导致从`3.x`迁移过来一路坎坷。所以官方为我们提供了`AppGlideModule`让我们保留以前的流式调用，然而...
+在最新的`Glide 4.x`中，应该是`4.x`开始吧，官方改变了`Glide`的请求结构，许多 api 包括常用`centerCrop()`、`error()`、`placeholder()`等都需要通过`RequestOptions`去配置，从而导致从`3.x`迁移过来一路坎坷。所以官方为我们提供了`AppGlideModule`让我们保留以前的流式调用，然而...
 
 <!-- More -->
 
 ## 0x01 You cannot call Glide.get() in registerComponents(), use the provided Glide instance instead
 
-这是什么鬼，明明debug包玩的好好的，打个release包就崩溃了，赶紧点进去看看
-``` java
+这是什么鬼，明明 debug 包玩的好好的，打个 release 包就崩溃了，赶紧点进去看看
+
+```java
 public static Glide get(@NonNull Context context) {
   if (glide == null) {
     synchronized (Glide.class) {
@@ -47,7 +48,7 @@ private static void checkAndInitializeGlide(@NonNull Context context) {
 我一开始也是以为是混淆问题，所以赶紧去官网翻了下混淆文档
 ![](1.jpeg)
 
-嗯？没什么问题，一切按照文档配置，针对自定义的`AppGlideModule`也有防混，那么只能上issue看看了
+嗯？没什么问题，一切按照文档配置，针对自定义的`AppGlideModule`也有防混，那么只能上 issue 看看了
 
 [https://github.com/bumptech/glide/issues/2780](https://github.com/bumptech/glide/issues/2780)
 
@@ -58,7 +59,8 @@ private static void checkAndInitializeGlide(@NonNull Context context) {
 ？？？虽然也是崩溃，不过这次报的错不一样，不过好像能看出什么
 
 `GeneratedAppGlideModuleImpl`这个东西就是我们自定义`AppGlideModule`会帮我们生成的代理类，这里说它实现错误了
-``` java
+
+```java
 private static GeneratedAppGlideModule getAnnotationGeneratedGlideModules() {
   GeneratedAppGlideModule result = null;
   try {
@@ -94,11 +96,13 @@ private static void throwIncorrectGlideModule(Exception e) {
 ```
 
 之所以报错就是找不到这个类，可以看到这里是通过`Class.forName`去查找的，既然找不到，说明很可能就是我一开始想的，被混淆了，赶紧打开`mapping.txt`看下
+
 ```
 com.bumptech.glide.GeneratedAppGlideModuleImpl -> gi:
 ```
 
 果然。。。那就加个混淆
+
 ```
 -keep class com.bumptech.glide.GeneratedAppGlideModuleImpl { *; }
 ```

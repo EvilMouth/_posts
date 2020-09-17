@@ -24,7 +24,8 @@ categories: Android
 ## 使用
 
 先创建`ViewModel`
-``` java
+
+```java
 public class UserInfoModel extends ViewModel {
 
     private MutableLiveData<UserInfo> mUserInfoMutableLiveData;
@@ -44,7 +45,8 @@ public class UserInfoModel extends ViewModel {
 ```
 
 然后就可以在`Activity`使用
-``` java
+
+```java
 UserInfoModel userInfoModel = ViewModelProviders.of(this).get(UserInfoModel.class);
         userInfoModel.getUserInfoLiveData().observe(this, new Observer<UserInfo>() {
             @Override
@@ -62,7 +64,7 @@ UserInfoModel userInfoModel = ViewModelProviders.of(this).get(UserInfoModel.clas
 
 ### of()
 
-``` java
+```java
 @MainThread
     public static ViewModelProvider of(@NonNull FragmentActivity activity) {
         initializeFactoryIfNeeded(activity.getApplication());
@@ -77,7 +79,9 @@ UserInfoModel userInfoModel = ViewModelProviders.of(this).get(UserInfoModel.clas
         }
     }
 ```
+
 `of()`方法其实有四个，分别是
+
 - of(@NonNull Fragment fragment)
 - of(@NonNull FragmentActivity activity)
 - of(@NonNull Fragment fragment, @NonNull Factory factory)
@@ -86,18 +90,21 @@ UserInfoModel userInfoModel = ViewModelProviders.of(this).get(UserInfoModel.clas
 第二个参数是支持自定义`Factory`，由于`ViewModel`是通过反射实例化的，所以默认的构造函数的无参的，如果需要操作系统服务，可以选择继承`AndroidViewModel`，这也是第一句`initializeFactoryIfNeeded(activity.getApplication())`初始化`sDefaultFactory`的原因，为了在后面反射时传入`application`。
 
 `of()`返回的是一个`ViewModelProvider`
-``` java
+
+```java
 public ViewModelProvider(ViewModelStore store, Factory factory) {
         mFactory = factory;
         this.mViewModelStore = store;
     }
 ```
+
 只是赋值了下`ViewModelStore`和`Factory`，具体实例化是在`get()`中。
 
 ### ViewModelStore
 
 先看看`ViewModelStore`怎么来的
-``` java
+
+```java
 ViewModelStores.of(activity)
 
 public static ViewModelStore of(FragmentActivity activity) {
@@ -134,10 +141,12 @@ private static HolderFragment createHolderFragment(FragmentManager fragmentManag
             return holder;
         }
 ```
+
 `ViewModelStore`是通过一个`HolderFragment.getViewModelStore()`获得，这个`HolderFragment`是一个透明无界面的`Fragment`，`ViewModelStores`就是保存在`HolderFragment`中。随后通过`FragmentManager`将`HolderFragment`添加到`Activity`，这也是为什么这个库要依赖于`FragmentActivity`的原因。
 
 接着看`getViewModelStore()`
-``` java
+
+```java
 public ViewModelStore getViewModelStore() {
         return mViewModelStore;
     }
@@ -171,20 +180,23 @@ public class ViewModelStore {
     }
 }
 ```
+
 所以`ViewModel`是被保存在这里，通过一个`HashMap`进行存取。
 咦，等一下，这个`HashMap`以及这个`ViewModelStore`都是局部变量，旋转屏幕也会销毁呀，明明不能保存数据。
 
 ### setRetainInstance
 
 这时候看到了`HolderFragment`的构造函数
-``` java
+
+```java
 public HolderFragment() {
         setRetainInstance(true);
     }
 ```
 
 查看`API`
-``` java
+
+```java
 /**
      * Control whether a fragment instance is retained across Activity
      * re-creation (such as from a configuration change).  This can only
@@ -203,7 +215,9 @@ public HolderFragment() {
         mRetainInstance = retain;
     }
 ```
+
 设定了`retain=true`之后，`Fragment`的生命周期将会改变，不会因为旋转屏幕等操作重建，但是会有以下几点后果
+
 - `onDestroy()`将不会回调
 - `onDetach`仍会回调，因为`Activity`重建了，所以`Fragment`暂时分离
 - `onCreate(Bundle)`也不会回调，因为`Fragment`并没有销毁
@@ -214,7 +228,8 @@ public HolderFragment() {
 ### get()
 
 最后看`ViewModelProvider.get()`
-``` java
+
+```java
 public <T extends ViewModel> T get(Class<T> modelClass) {
         String canonicalName = modelClass.getCanonicalName();
         if (canonicalName == null) {
@@ -242,9 +257,10 @@ public <T extends ViewModel> T get(@NonNull String key, @NonNull Class<T> modelC
         return (T) viewModel;
     }
 ```
+
 先在`ViewModelStore`拿`viewModel`，拿到直接返回，拿不到就通过`Factory.create()`反射实例化
 
-``` java
+```java
 @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             if (AndroidViewModel.class.isAssignableFrom(modelClass)) {
@@ -276,8 +292,10 @@ public <T extends ViewModel> T get(@NonNull String key, @NonNull Class<T> modelC
             }
         }
 ```
+
 如果是`AndroidViewModel`的话，则会带多个`application`参数，所以官方提供自定义`Factory`自行操作
-``` java
+
+```java
 /**
      * Implementations of {@code Factory} interface are responsible to instantiate ViewModels.
      */
@@ -295,7 +313,8 @@ public <T extends ViewModel> T get(@NonNull String key, @NonNull Class<T> modelC
 ```
 
 ## 总结
-`ViewModel`负责帮`UI`准备数据，减轻UI负担，并能够自动保存数据防止某些场景丢失、快速读取更新UI。
+
+`ViewModel`负责帮`UI`准备数据，减轻 UI 负担，并能够自动保存数据防止某些场景丢失、快速读取更新 UI。
 由于`LiveData`的观察者特性，所以`ViewModel`还可以实现数据共享，例如最常见的`ViewPager`绑定着多个`Fragment`，某些场景会涉及到`Fragment`之间的通信，以往的做法要不是通过`Activity`进行中转通信，要不是使用事件总线。使用`ViewModel`可以很方便解决这个问题，通过`of(getActivity())`绑定到`Activity`，这样的`ViewModel`将会是同一个实例，也就能共同使用同一份数据从而进行通信等操作。
 
 `ViewModel`的生命周期会持续到`Activity.onDestroy`、`Fragment.onDetach`，并会回调`onCleared`，所以有些大型操作依旧得进行解除。

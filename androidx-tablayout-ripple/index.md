@@ -18,9 +18,9 @@ categories: Android
 
 ## 0x01 support-28.0.0
 
-升级到28.0.0后`TabLayout`加多了一个属性`app:tabRippleColor`，查看源码可知
+升级到 28.0.0 后`TabLayout`加多了一个属性`app:tabRippleColor`，查看源码可知
 
-``` java
+```java
 this.tabBackgroundResId = a.getResourceId(styleable.TabLayout_tabBackground, 0);
 this.tabRippleColorStateList = MaterialResources.getColorStateList(context, a, styleable.TabLayout_tabRippleColor);
 

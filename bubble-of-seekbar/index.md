@@ -16,7 +16,8 @@ categories: Android
 <!-- More -->
 
 首先实现气泡，原理是在需要的时候向`WindowManager`请求添加一个`View`到窗口并及时更新气泡的位置
-``` java
+
+```java
 WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
 layoutParams = new WindowManager.LayoutParams();
@@ -34,13 +35,14 @@ if (XiaoMiUtils.isMIUI() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1){
 }
 ```
 
->FLAG_NOT_TOUCH_MODAL : 当前Window区域以外的单击事件传递给底层Window，不拦截，一般需要开启此标记
->FLAG_NOT_FOCUSABLE : 不需要获取焦点
->FLAG_SHOW_WHEN_LOCKED : 显示在锁屏上
->XiaoMiUtils.isMIUI() : 由于小米对TYPE_TOAST管制比较严，在有些小米手机会显示不了
+> FLAG_NOT_TOUCH_MODAL : 当前 Window 区域以外的单击事件传递给底层 Window，不拦截，一般需要开启此标记
+> FLAG_NOT_FOCUSABLE : 不需要获取焦点
+> FLAG_SHOW_WHEN_LOCKED : 显示在锁屏上
+> XiaoMiUtils.isMIUI() : 由于小米对 TYPE_TOAST 管制比较严，在有些小米手机会显示不了
 
 并在适当的时候调用
-``` java
+
+```java
 windowManager.addView(bubbleView, layoutParams);
 windowManager.updateViewLayout(bubbleView, layoutParams);
 windowManager.removeViewImmediate(bubbleView);
@@ -51,7 +53,8 @@ windowManager.removeViewImmediate(bubbleView);
 ### 但是
 
 哈哈，自定义`View`不是我想要的，这样做侵入性很强，说不定以后设计师改了个样式就麻烦了，所以就要改到`SeekBar`。既然这样干脆不要自定义`View`，我就想到了`SeekBar`本身提供的`setOnSeekBarChangeListener`，里面有三个回调
-``` java
+
+```java
 public interface OnSeekBarChangeListener {
         void onProgressChanged(SeekBar var1, int var2, boolean var3);
 
@@ -60,10 +63,12 @@ public interface OnSeekBarChangeListener {
         void onStopTrackingTouch(SeekBar var1);
     }
 ```
+
 简直完美符合我的思路，在`onStartTrackingTouch`的时候`addView`，在`onStopTrackingTouch`的时候`removeViewImmediate`，在滑动过程中，也就是`onProgressChanged`的时候`updateViewLayout`更新气泡位置，这样做完全不会影响到项目原有的代码，只需要注入气泡显示的代码即可。
 
 于是有了下面的`Delegate`
-``` java
+
+```java
 public class SeekBarBubbleDelegate implements SeekBar.OnSeekBarChangeListener {
 
     /**
@@ -198,10 +203,11 @@ public class SeekBarBubbleDelegate implements SeekBar.OnSeekBarChangeListener {
 }
 ```
 
->onProgressChanged下拿到progress进度去计算从而更新气泡位置
+> onProgressChanged 下拿到 progress 进度去计算从而更新气泡位置
 
 使用方法极其简单，给`SeekBar`设置监听并交给`delegate`管理即可
-``` java
+
+```java
 SeekBarBubbleDelegate delegate = new SeekBarBubbleDelegate(context, bubbleView);
 seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -222,4 +228,5 @@ seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 ```
 
 ### 项目地址
+
 [https://github.com/izyhang/SeekBarBubble](https://github.com/izyhang/SeekBarBubble)

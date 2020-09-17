@@ -37,13 +37,14 @@ categories: Backend
 
 - cat id_rsa.pub >> authorized_keys
 
-很多跟SELinux有关，比方说
-- Nginx安装启动后竟然连欢迎页都打不开
-- 配置include外部conf文件竟然无效
-- 读取conf文件竟然权限不足
+很多跟 SELinux 有关，比方说
+
+- Nginx 安装启动后竟然连欢迎页都打不开
+- 配置 include 外部 conf 文件竟然无效
+- 读取 conf 文件竟然权限不足
 - 配置上游但是不允许访问
 
-基本上遇到很多之前搭服务器没遇到过的问题，遇到这些异常问题时，可以考虑下是否是SELinux的问题，试着先临时关闭它排查下
+基本上遇到很多之前搭服务器没遇到过的问题，遇到这些异常问题时，可以考虑下是否是 SELinux 的问题，试着先临时关闭它排查下
 
 - sestatus -v 或 getenforce 查看状态
 - setenforce 0 临时关闭
@@ -61,34 +62,38 @@ categories: Backend
 
 ### Nginx
 
-- yum install epel-release 安装epel源
+- yum install epel-release 安装 epel 源
 - yum install nginx
 - service nginx start
 - systemctl list-unit-files|grep nginx
 - systemctl enable nginx
 - vim /etc/nginx/nginx.conf
-- include xxx/xxx/*.conf
+- include xxx/xxx/\*.conf
 
 #### 欢迎页无法访问
 
-SELinux限制
+SELinux 限制
+
 - sudo firewall-cmd --permanent --zone=public --add-service=http
 - sudo firewall-cmd --permanent --zone=public --add-service=https
 - sudo firewall-cmd --reload
 
 Firewalld
+
 - service firewalld stop
 - firewall-cmd --zone=public --add-port=80/tcp --permanent
 - service firewalld reload
 
-#### 无权限读取conf文件
+#### 无权限读取 conf 文件
 
-同样是SELinux限制
+同样是 SELinux 限制
+
 - sudo restorecon xxx/xxx.conf
 
 #### 配置上游但是不允许访问
 
 [https://stackoverflow.com/questions/23948527/13-permission-denied-while-connecting-to-upstreamnginx](https://stackoverflow.com/questions/23948527/13-permission-denied-while-connecting-to-upstreamnginx)
+
 - getsebool -a | grep httpd 发现其中 httpd_can_network_connect –> off
 - setsebool httpd_can_network_connect 1
 
@@ -103,121 +108,118 @@ Firewalld
 - mysqld --initialize
 - grep 'temporary password' /var/log/mysqld.log
 - mysql -u root -p
--- alter user 'root'@'localhost' identified by 'yourpassword';
--- show databases;
--- use mysql;
+  -- alter user 'root'@'localhost' identified by 'yourpassword';
+  -- show databases;
+  -- use mysql;
 
 - rpm -qa|grep mysql 查看历史版本
 
-### cron自启动eggjs
+### cron 自启动 eggjs
 
-nginx、mysql这些服务本身就支持设置开机启动，但是eggjs项目不行，这时候就可以利用cron服务
+nginx、mysql 这些服务本身就支持设置开机启动，但是 eggjs 项目不行，这时候就可以利用 cron 服务
 
 - yum install crontabs
 - service crond start
 - syctemctl enable crond
-- vim xxx.sh 内容是启动eggjs的相关命令
+- vim xxx.sh 内容是启动 eggjs 的相关命令
 - vim xxx.cron 内容是 @reboot xxx.sh
 - crontab xxx.cron
 - crontab -l 查看是否配置成功
 
-## GitHub Actions自动部署
+## GitHub Actions 自动部署
 
 ### sftp
 
 在`Github Actions Marketplace`找到个[SFTP Deploy](https://github.com/marketplace/actions/sftp-deploy)帮助在构建后利用`sftp`将文件上传到服务器
 
-比方说vue项目打包出`dist/`然后上传
-- secrets.xxx 是类似环境变量，在github上的项目设置里配置
+比方说 vue 项目打包出`dist/`然后上传
 
-``` yml
+- secrets.xxx 是类似环境变量，在 github 上的项目设置里配置
+
+```yml
 on:
   push:
     branches:
       - master
 
 env:
-  NODE_VERSION: '10.x'                # set this to the node version to use
+  NODE_VERSION: "10.x" # set this to the node version to use
 
 jobs:
   build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-    - name: npm install, build, and test
-      run: |
-        npm install
-        npm run build
-    - name: push
-      uses: izyhang/SFTP-Deploy-Action@v1.1
-      with:
-        username: '${{ secrets.SSH_NAME }}'
-        server: '${{ secrets.SSH_IP }}'
-        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-        local_path: './dist/*'
-        remote_path: '${{ secrets.SSH_TARGET_PATH }}'
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build
+      - name: push
+        uses: izyhang/SFTP-Deploy-Action@v1.1
+        with:
+          username: "${{ secrets.SSH_NAME }}"
+          server: "${{ secrets.SSH_IP }}"
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          local_path: "./dist/*"
+          remote_path: "${{ secrets.SSH_TARGET_PATH }}"
 ```
 
-### 压缩后再sftp
+### 压缩后再 sftp
 
 项目文件多起来之后不压缩再上传实在效率低，那么自然要用到`tar`命令，但是
 
 1、`tar -zcf ./release.tgz .` -> 压缩到项目文件夹下会报错
-2、`tar -zcf ../release.tgz .` -> 压缩到项目上级文件夹不会报错但是sftp拿不到该文件
+2、`tar -zcf ../release.tgz .` -> 压缩到项目上级文件夹不会报错但是 sftp 拿不到该文件
 3、最后 -> `tar -zcf ../release.tgz .` -> `cp ../release.tgz ./release.tgz` -> 才搞定
 
 前两步为什么不行我实在找不到原因
 
-### sftp后解压
+### sftp 后解压
 
 上一步压缩后上传到服务器需要解压等后续操作，所以我在[SFTP Deploy](https://github.com/marketplace/actions/sftp-deploy)基础上加多了个在服务器执行命令的操作得到了[新·SFTP Deploy](https://github.com/izyhang/SFTP-Deploy-Action)
 
-比方说解压+eggjs重启
+比方说解压+eggjs 重启
 
-``` yml
+```yml
 on:
   push:
     branches:
       - master
 
 env:
-  NODE_VERSION: '10.x'                # set this to the node version to use
-  TGZ_PATH: './release.tgz'
-  KEY_PATH: './private_key'
+  NODE_VERSION: "10.x" # set this to the node version to use
+  TGZ_PATH: "./release.tgz"
+  KEY_PATH: "./private_key"
 
 jobs:
   build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-    - name: npm install, build, and test
-      run: |
-        npm install --production
-    - name: tar c
-      run: |
-        tar -zcf ../release.tgz .
-        cp ../release.tgz ${{ env.TGZ_PATH }}
-    - name: push
-      uses: izyhang/SFTP-Deploy-Action@v1.1
-      with:
-        username: '${{ secrets.SSH_NAME }}'
-        server: '${{ secrets.SSH_IP }}'
-        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-        local_path: '${{ env.TGZ_PATH }}'
-        remote_path: '${{ secrets.SSH_TARGET_PATH }}'
-        ssh_command: 'tar -zxf ${{ env.TGZ_PATH }};npm stop;npm start --env=prod'
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: npm install, build, and test
+        run: |
+          npm install --production
+      - name: tar c
+        run: |
+          tar -zcf ../release.tgz .
+          cp ../release.tgz ${{ env.TGZ_PATH }}
+      - name: push
+        uses: izyhang/SFTP-Deploy-Action@v1.1
+        with:
+          username: "${{ secrets.SSH_NAME }}"
+          server: "${{ secrets.SSH_IP }}"
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          local_path: "${{ env.TGZ_PATH }}"
+          remote_path: "${{ secrets.SSH_TARGET_PATH }}"
+          ssh_command: "tar -zxf ${{ env.TGZ_PATH }};npm stop;npm start --env=prod"
 ```
-
-
-
-
