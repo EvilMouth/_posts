@@ -23,7 +23,7 @@ categories: Blog
 
 还有一点，博客路径也改了，从 blog.evilmouth.net 改成 evilmouth.net/blog，为什么
 
-前段时间把网站迁移到 Github Pages，用 CNAME 记录到域名，博客用的 blog.evilmouth.net，指向 github.io，重点来了，我手机用的联通4G，访问 github.io 是直接无法访问此网站，在网上看到别人也在讨论，说他们移动电信也是这样，实在是太坑了。不过联通没有禁止 github.com，所以 evilmouth.net 是可以访问的，就跟不留学的时候 git clone 半天是一样的，浏览还是给你看的。。。所以干脆将个人主页和博客放到一起，用 Gatsby 加两个页也是非常容易
+前段时间把网站迁移到 Github Pages，用 CNAME 记录到域名，博客用的 blog.evilmouth.net，指向 github.io，重点来了，我手机用的联通 4G，访问 github.io 是直接无法访问此网站，在网上看到别人也在讨论，说他们移动电信也是这样，实在是太坑了。不过联通没有禁止 github.com，所以 evilmouth.net 是可以访问的，就跟不留学的时候 git clone 半天是一样的，浏览还是给你看的。。。所以干脆将个人主页和博客放到一起，用 Gatsby 加两个页也是非常容易
 
 ![](170844.jpg)
 
