@@ -73,15 +73,15 @@ $ npm install hexo-deployer-git --save
 部署到Github是个不错的选择，免费且有300MB空间，正常博客够用的，不过是国外的，访问速度可能有点慢
 #### 创建仓库
 这里要注意下，仓库名必须是唯一的，例如你的用户名是abcd，那么创建的仓库名必须为abcd.github.io。点击Create repository。
-![jsdelivr](1.png)
+![](1.png)
 
 #### 创建Github Pages
 进入仓库设置，拉到下面看到Github Pages
-![jsdelivr](2.png)
+![](2.png)
 可以看到上图save点不了，要求你的仓库起码有点内容，这时候返回仓库首页随便创建一下README就行了，因为后面git博客内容不会管其它文件的。
-![jsdelivr](3.png)
+![](3.png)
 再回到仓库设置，选择主分支，并Save
-![jsdelivr](4.png)
+![](4.png)
 这时候会多出一栏文字
 ```
 Your site is ready to be published at http://abcd.github.io/.
@@ -108,12 +108,12 @@ $ hexo d -g
 也可以部署到Coding，毕竟国内，而且项目可以设置私有，避免泄露某些重要key
 #### 创建仓库
 同样先创建仓库，注意仓库名也必须是唯一的：abcd.coding.me，abcd是你的用户名
-![jsdelivr](5.png)
+![](5.png)
 #### 创建Coding Pages
 来到->代码->Pages服务，选择来源master主分支并保存
-![jsdelivr](6.png)
+![](6.png)
 可以看到已经成功运行
-![jsdelivr](7.png)
+![](7.png)
 
 #### 配置_config.xml
 打开刚才初始化时的文件夹根目录下的_config.xml文件，并修改deploy下属性，abcd改为你的Coding用户名，可以看到github被注释掉了，如果想同时部署到多个仓库，就可以采用这种方式
@@ -143,7 +143,7 @@ $ hexo d -g
 
 ### 设置DNS服务器
 这里建议选择DNSPod，不过也可以用万网自己的。进入万网控制台，并修改DNS服务器为
-![jsdelivr](8.png)
+![](8.png)
 - f1g1ns1.dnspod.net
 - f1g1ns2.dnspod.net
 
@@ -152,21 +152,21 @@ $ hexo d -g
 
 #### 添加域名
 进入DNSPod，进入域名解析并添加域名
-![jsdelivr](9.png)
+![](9.png)
 
 #### 添加解析记录
 可以解析到Github也可以解析到Coding也可以都解析
 
 ##### 解析到Github
 - 解析到Github需要注意一点，就是需要在`<folder>`目录下的`source`目录里新建个文件CNAME并在文件里面添加一行你的域名，我这里是zyhang.com,如果不想解析到主域名，这里也可以写成类似blog.zyhang.com等等，记得重新git到Github上
-![jsdelivr](10.png)
+![](10.png)
 - 继续到DNSPod添加解析记录，添加以下三项，域名解析有时候得等一会，稍后就可以使用你的域名访问网站了
-![jsdelivr](11.png)
+![](11.png)
 
 ##### 解析到Coding
 - 解析到Coding不需要像Github一样新建个CNAME文件，只需要直接到项目控制台->代码->Pages服务->自定义域名，填写你的域名进行绑定就可以了
-![jsdelivr](12.png)
+![](12.png)
 - 然后依然是到DNSPod添加解析记录，添加以下两项即可
-![jsdelivr](13.png)
+![](13.png)
 
 至此自定义域名绑定成功

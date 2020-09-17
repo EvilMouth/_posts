@@ -12,7 +12,7 @@ categories: Blockchain
 ### address vs address payable
 
 在solidity 5.0版本之后，address被拆分成address和address payable
-![jsdelivr](1.jpeg)
+![](1.jpeg)
 
 在5.0之后，address将失去`transfer`功能，得声明成address payable才有
 
@@ -54,7 +54,7 @@ function withdraw() external {
 ### payable测试
 
 可以在remix上测试payable函数，填入Value数值调用即可
-![jsdelivr](2.jpeg)
+![](2.jpeg)
 
 ### ERC20规范
 
@@ -69,7 +69,7 @@ uint256 public totalSupply = 5000000 * (10 ** uint256(decimals));
 当合约代码中存在的操作越来越多，对应的gas消耗也会越来越多（具体可以看官方的gas计算方式），那么在部署或者进行函数调用时，可能会出现失败的情况
 
 例如在remix部署合约时出现
-![jsdelivr](3.jpeg)
+![](3.jpeg)
 
 这些情况都可能是设定的gas limit过低，需要消耗的gas超过了limit导致调用失败，遇到这种情况都可以通过上调gas支出解决
 

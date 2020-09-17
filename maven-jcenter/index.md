@@ -11,7 +11,7 @@ categories: Maven
 记录一下`Android`开发发布项目到`jcenter`的过程
 
 Android开发过程中需要拉很多依赖，比如官方的库，通常都是一句话调用，非常方便
-![jsdelivr](1.png)
+![](1.png)
 
 之前也使用过`jitPack`，比起`jcenter`方便很多，不过使用的人没有用`jcenter`的多，新建Android项目也不会自己配置，如果你想用`jitPack`，可以看这篇文章[上传项目到jitpack](http://zyhang.com/2017/05/08/maven-jitpack/)
 
@@ -23,13 +23,13 @@ Android开发过程中需要拉很多依赖，比如官方的库，通常都是�
 [https://bintray.com/signup/oss](https://bintray.com/signup/oss)
 要发布到`jcenter`需要有个`bintray`账号管理你的仓库，上面是注册链接。注意这一步非常关键，因为你如果直接搜`bintray`跳去官网首页并注册的话是注册企业账号，是只有30天试用而且后续操作也会不同，所以千万注意要注册的是个人账号。
 点链接进去之后选`Sign up with Github`用`Github`账号注册就好了，这里填写注册资料，里面的`Username`比较重要，关乎后面项目的配置
-![jsdelivr](2.png)
+![](2.png)
 注册完之后直接会跳到首页，这里还需要记住API key信息，也关乎后面项目配置。可以在个人资料页里面找到
-![jsdelivr](3.png)
+![](3.png)
 
 ## 创建Repository
 在bintray网站首页找到`Add New Repository`创建仓库，注意`Name`和`Type`（其中的`Name`不一定要起`maven`）
-![jsdelivr](4.png)
+![](4.png)
 
 ## 添加插件
 为根目录的`build.gradle`的`dependencies`添加`bintray`插件
@@ -208,7 +208,7 @@ bintray {
 可以先执行`chmod +x gradlew`
 
 等待编译成功出现SUCCESS，这时候再上`bintray`就可以在刚才创建的`Repository`找到你的`library`
-![jsdelivr](5.png)
+![](5.png)
 
 ## 添加到jcenter
 虽然现在你的`library`已经发布了，但是也只是发布在你个人的`Maven`仓库中，如果别人要添加此依赖，还必须定义你的仓库的地址，如下
@@ -226,11 +226,11 @@ dependencies {
 }
 ```
 但是这样就与我们的预期不一致了，我们是想要一句话直接调用，不需要再去定义什么仓库地址，所以此时你只需要同步你的仓库到`jcenter`就行了
-![jsdelivr](6.png)
+![](6.png)
 然后提交坐等`approved`就可以了，第二天就会收到邮件，现在就可以直接一句话拉依赖了
-![jsdelivr](7.png)
-![jsdelivr](8.png)
+![](7.png)
+![](8.png)
 
 ## 总结
 之所以配置到`jcenter`能够使别人一句话拉依赖其实也是因为使用`jcenter`的人是最多的，所以谷歌也直接帮我们自动配置了`jcenter`，在使用`Android Studio`新建项目的时候就可以看到
-![jsdelivr](9.png)
+![](9.png)

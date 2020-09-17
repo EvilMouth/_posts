@@ -13,7 +13,7 @@ categories: Android
 <!-- More -->
 
 偷偷截下Google Play的图
-![jsdelivr](1.png)
+![](1.png)
 如上图所示，上面的banner就是中对齐的效果，下面的游戏列表就是左对齐的效果
 
 官网support包提供了`SnapHelper`帮助实现这样的效果

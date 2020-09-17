@@ -108,7 +108,7 @@ bintray.apikey=******
 在配置后各属性后，直接执行具体`Library Module`的`fuck`命令。
 之后更新版本就是修改`根gradle.properties`文件的`POM_PUBLISH_VERSION`后执行`fuck`
 
-![jsdelivr](1.jpeg)
+![](1.jpeg)
 
 ## 0x03 一些坑
 

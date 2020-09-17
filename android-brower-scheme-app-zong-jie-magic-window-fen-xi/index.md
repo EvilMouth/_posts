@@ -38,7 +38,7 @@ startActivity(intent)
 ```
 
 ### 坑一：怎么后台进程有两个我的App
-![jsdelivr](1.jpeg)
+![](1.jpeg)
 
 应该是部分浏览器(例如华为浏览器)在处理scheme时没有针对intent添加`FLAG_ACTIVITY_NEW_TASK`flag，也就导致了App页面会在浏览器进程显示
 
@@ -92,7 +92,7 @@ private void getDPLs() {
 ```
 
 抓个包看到，最下面的`ddl.dp`就是要触发的scheme
-![jsdelivr](2.jpeg)
+![](2.jpeg)
 
 > 后面就是根据这个`ddl.dp`去跳转到具体页面，这就是魔窗能复原场景的原因，这个功能也是挺有用的
 

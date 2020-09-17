@@ -32,9 +32,9 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 ## 创建一个release
 为你的`Github`仓库创建一个`release`
-![jsdelivr](1.png)
-![jsdelivr](2.png)
-![jsdelivr](3.png)
+![](1.png)
+![](2.png)
+![](3.png)
 
 ## 拉依赖
 ```
