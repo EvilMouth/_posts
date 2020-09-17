@@ -102,7 +102,7 @@ public class MainFragment$$ARouter$$Autowired implements ISyringe {
 
 ## 再次思考
 
- 虽然利用 Transform 可以解决反射的问题，但无疑也带来了一个问题，就是项目协作上，其他人不了解的话会很奇怪。我的做法是在$$ARouter$$Autowired 类加了行注释，起码别人在看这个类的时候能知道什么时候会 inject。
+虽然利用 Transform 可以解决反射的问题，但无疑也带来了一个问题，就是项目协作上，其他人不了解的话会很奇怪。我的做法是在 $$ARouter$$Autowired 类加了行注释，起码别人在看这个类的时候能知道什么时候会 inject。
 至于怎么加这行注释，就靠各位发挥了
 
 本项目例子已开源[Github](https://github.com/izyhang/ARouter-AutowiredTransform)

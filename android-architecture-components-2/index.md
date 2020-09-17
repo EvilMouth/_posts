@@ -346,7 +346,7 @@ private static class Source<V> {
     }
 ```
 
-`plug()`和`unplug()`不必多说，标准的注册取消注册步骤。看看构造函数里面又  来了个`Observer`，也就是第二个`Observer`，在回调函数`onChanged`里判断了下`version`，前后不一致的话手动调用`observer.onChanged(v);`，也就是第一个`observer`。有点绕了 0 0
+`plug()`和`unplug()`不必多说，标准的注册取消注册步骤。看看构造函数里面又来了个`Observer`，也就是第二个`Observer`，在回调函数`onChanged`里判断了下`version`，前后不一致的话手动调用`observer.onChanged(v);`，也就是第一个`observer`。有点绕了 0 0
 
 那么第三个`Observer`在哪里呢，其实就是一开始通过`map()`转换得来的`LiveData`:`stringLiveData`进行观察的`observer`。具体流程如下 1.通过`map()`转换拿到`MediatorLiveData` 2.调用`observe()`对转换来的`MediatorLiveData`进行观察 3.生命周期到达`START`后会自动调用`onActive()` 4.`MediatorLiveData.onActive()`会遍历调用`plug()` 5.`plug()`中对`源LiveData`调用`observe()`观察 6.`源LiveData`回调`onChanged()`即`Source`中的`observer`(第二个`observer`) 7.继续回调第一个`onChanged()`也就是`Transformations.map()`中的`Observer` 8.`result.setValue(func.apply(x));` 9.最终回调第三个`onChanged()`：开发者自己的`observer`从而更新 UI
 
