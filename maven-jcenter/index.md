@@ -37,7 +37,7 @@ Android 开发过程中需要拉很多依赖，比如官方的库，通常都是
 
 为根目录的`build.gradle`的`dependencies`添加`bintray`插件
 
-```
+```groovy
 classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
 classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 ```
@@ -46,7 +46,7 @@ classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
 修改你想发布的`library`级别的 module 的`build.gradle`，直接在后面添加如下代码
 
-```
+```groovy
 ext {
     bintrayRepo = 'maven'//上面创建`Repository`的是`Name`
     bintrayName = 'damon'//你想要发布的仓库的名称
@@ -80,7 +80,7 @@ apply from:'../gradle/bintray.gradle'
 
 打开项目的`local.properties`文件并增加
 
-```
+```none
 bintray.user=zyhang//刚才`Username
 bintray.apikey=*********************************//刚才的API key
 ```
@@ -91,7 +91,7 @@ bintray.apikey=*********************************//刚才的API key
 
 `install.gradle`
 
-```
+```groovy
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = publishedGroupId                               // Maven Group ID for the artifact
@@ -137,7 +137,7 @@ install {
 
 `bintray.gradle`
 
-```
+```groovy
 apply plugin: 'com.jfrog.bintray'
 
 version = libraryVersion
@@ -212,7 +212,7 @@ bintray {
 配置完成，准备上传到`bintray`
 直接使用`Android Studio`的`Terminal`
 
-```
+```shell
 ./gradlew install
 ./gradlew bintrayupload
 ```
@@ -227,7 +227,7 @@ bintray {
 
 虽然现在你的`library`已经发布了，但是也只是发布在你个人的`Maven`仓库中，如果别人要添加此依赖，还必须定义你的仓库的地址，如下
 
-```
+```groovy
 repositories {
     maven {
         url  "http://dl.bintray.com/zyhang/maven"//此地址可以在`package`页的`SET ME UP`里面找到

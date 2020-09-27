@@ -25,7 +25,7 @@ categories: Blog
 
 ## 安装 Hexo
 
-```
+```shell
 $ npm install -g hexo-cli
 ```
 
@@ -38,7 +38,7 @@ $ npm install -g hexo-cli
 
 下面的`<folder>`随意换成自己想要的文件夹名，如 blog
 
-```
+```shell
 $ hexo init <folder>
 $ cd <folder>
 $ npm install
@@ -46,7 +46,7 @@ $ npm install
 
 运行后可以在根目录找到<folder>文件夹，里面目录大概如下
 
-```
+```none
 .
 ├── _config.yml
 ├── package.json
@@ -59,13 +59,13 @@ $ npm install
 
 ## 验证是否配置成功
 
-```
+```shell
 $ hexo s
 ```
 
 运行后可以看到命令行
 
-```
+```shell
 INFO  Start processing
 INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.
 ```
@@ -82,7 +82,7 @@ INFO  Hexo is running at http://localhost:4000/. Press Ctrl+C to stop.
   [https://blog.zyhang.com/git-ssh-mac/](https://blog.zyhang.com/git-ssh-mac/)
 - 需要给 Hexo 安装个 Git 插件
 
-```
+```shell
 $ npm install hexo-deployer-git --save
 ```
 
@@ -105,7 +105,7 @@ $ npm install hexo-deployer-git --save
 ![](4.png)
 这时候会多出一栏文字
 
-```
+```shell
 Your site is ready to be published at http://abcd.github.io/.
 ```
 
@@ -115,7 +115,7 @@ Your site is ready to be published at http://abcd.github.io/.
 
 打开刚才初始化时的文件夹根目录下的\_config.xml 文件，并修改 deploy 下属性，abcd 改为你的 Github 用户名
 
-```
+```yaml
 deploy:
   type: git
   repo:
@@ -125,7 +125,7 @@ deploy:
 
 #### 部署
 
-```
+```shell
 $ hexo d -g
 ```
 
@@ -151,7 +151,7 @@ $ hexo d -g
 
 打开刚才初始化时的文件夹根目录下的\_config.xml 文件，并修改 deploy 下属性，abcd 改为你的 Coding 用户名，可以看到 github 被注释掉了，如果想同时部署到多个仓库，就可以采用这种方式
 
-```
+```yaml
 deploy:
   type: git
   repo:
@@ -162,7 +162,7 @@ deploy:
 
 #### 部署
 
-```
+```shell
 $ hexo d -g
 ```
 

@@ -39,7 +39,7 @@ categories: Android
 
 - 将下方代码添加到 library module 的 build.gradle 文件
 
-```gradle
+```groovy
 apply plugin: 'maven-publish' // 添加到library build.gradle的最上面
 
 def githubProperties = new Properties()
@@ -108,7 +108,7 @@ $ gradle publish
 
 - 将下方代码添加到根 build.gradle 文件
 
-```gradle
+```groovy
 allprojects {
     repositories {
         maven {
@@ -125,7 +125,7 @@ allprojects {
 
 - 添加依赖到 app.module 文件
 
-```gradle
+```groovy
 dependencies {
   implementation 'com.example:package'
 }
@@ -135,6 +135,6 @@ dependencies {
 
 ## Part 3 - 便携发布
 
-```gradle
+```groovy
 apply from: 'https://raw.githubusercontent.com/izyhang/GitHub-Packages-Publish/master/publish.gradle'
 ```

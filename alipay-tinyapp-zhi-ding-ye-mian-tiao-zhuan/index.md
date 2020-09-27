@@ -12,9 +12,7 @@ categories: Android
 
 支付宝小程序支持从外部调起，具体做法是通过`scheme`，如下
 
-```
 alipays://platformapi/startapp?appId=[appId]&page=[pagePath]&query=[params]
-```
 
 - appId 是小程序唯一 Id
 - pagePath 是页面路径，也就是本文要讲的，不带则跳首页

@@ -20,7 +20,7 @@ categories: Git
 
 如果配置了全局 git 用户名以及邮箱这一步可以跳过，也可以为每一个 key 都配置专属 git 用户名邮箱
 
-```
+```shell
 $ git config user.name "你的用户名"
 $ git config user.email "你的邮箱"
 ```
@@ -29,7 +29,7 @@ $ git config user.email "你的邮箱"
 
 ### 2.生成 ssh key
 
-```
+```shell
 $ ssh-keygen -t rsa -C "你的邮箱"
 ```
 
@@ -39,7 +39,7 @@ $ ssh-keygen -t rsa -C "你的邮箱"
 
 可以使用`clipcopy`命令，也可以自行打开文件复制
 
-```
+```shell
 $ clipcopy < ~/.ssh/id_rsa.pub
 ```
 
@@ -49,13 +49,13 @@ $ clipcopy < ~/.ssh/id_rsa.pub
 
 在 Github 添加公匙后，就可以验证是否链接成功
 
-```
+```shell
 $ ssh -T git@github.com
 ```
 
 按提示输入 yes 并稍等片刻看到以下内容就是配置成功
 
-```
+```shell
 Hi 你的用户名! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
@@ -65,7 +65,7 @@ Hi 你的用户名! You've successfully authenticated, but GitHub does not provi
 
 ### 1.生成 ssh key 并指定名称
 
-```
+```shell
 $ ssh-keygen -t rsa -f ~/.ssh/id_rsa.gitlab -C "你的邮箱"
 ```
 
@@ -73,20 +73,20 @@ $ ssh-keygen -t rsa -f ~/.ssh/id_rsa.gitlab -C "你的邮箱"
 
 ### 2.新增并配置或修改 config
 
-```
+```shell
 $ touch ~/.ssh/config
 ```
 
 并在 config 文件添加以下内容
 
-```
+```none
 Host gitlab.com
     IdentityFile ~/.ssh/id_rsa.gitlab
 ```
 
 完整例子
 
-```
+```none
 Host github.com
     IdentityFile ~/.ssh/id_rsa.github
 Host gitlab.com
@@ -99,13 +99,13 @@ Host git.coding.net
 
 ### 4.验证
 
-```
+```shell
 $ ssh -T git@gitlab.com
 ```
 
 看到以下内容表示配置成功
 
-```
+```shell
 Welcome to GitLab, 你的用户名!
 ```
 
@@ -115,7 +115,7 @@ Welcome to GitLab, 你的用户名!
 
 如果公司自搭 git 服务器带有端口号，那么需要配置 Port
 
-```
+```none
 Host xxx.xxx.xxx
     IdentityFile ~/.ssh/id_rsa.xxx
     Port xxxx

@@ -97,13 +97,13 @@ private static void throwIncorrectGlideModule(Exception e) {
 
 之所以报错就是找不到这个类，可以看到这里是通过`Class.forName`去查找的，既然找不到，说明很可能就是我一开始想的，被混淆了，赶紧打开`mapping.txt`看下
 
-```
+```none
 com.bumptech.glide.GeneratedAppGlideModuleImpl -> gi:
 ```
 
 果然。。。那就加个混淆
 
-```
+```none
 -keep class com.bumptech.glide.GeneratedAppGlideModuleImpl { *; }
 ```
 

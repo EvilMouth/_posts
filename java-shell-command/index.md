@@ -29,13 +29,13 @@ monkey 是 Android 一个压力测试工具，使用方法以及常用命令可�
 
 这里要讲的是一个隐藏功能`monkey.script`，可以直接新建这个文件，编辑一堆命令，并保存到手机，最后执行
 
-```
+```shell
 adb shell monkey -f filePath 1
 ```
 
 具体`monkey.script`文件编写如下
 
-```
+```none
 type = user
 count = 1
 speed = 500
@@ -45,7 +45,7 @@ start data >>
 
 自定义命令有(详情可以看[http://www.jianshu.com/p/85454be8424f](http://www.jianshu.com/p/85454be8424f))
 
-```
+```none
 LaunchActivity ( pkg_name , act_name )
 UserWait ( sleepTime )
 DispatchPointer
@@ -57,7 +57,7 @@ DispatchString( input )
 
 ### 还有这个
 
-```
+```shell
 adb shell input tap 50 250 //点击屏幕坐标(50,250)
 adb shell inpput swipe 50 250 250 250 500 //滑动
 adb shell input text abd //输入abc
@@ -66,7 +66,7 @@ adb shell input keyevent keyCode //点击功能键
 
 功能键表如下
 
-```
+```none
 KEYCODE_UNKNOWN=0;
 
 KEYCODE_SOFT_LEFT=1;

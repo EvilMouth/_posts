@@ -18,7 +18,7 @@ categories: Maven
 
 在根`build.gradle`配置插件
 
-```
+```groovy
 buildscript {
   dependencies {
     classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5' // Add this line
@@ -28,7 +28,7 @@ buildscript {
 
 在`library`的`build.gradle`添加
 
-```
+```groovy
 apply plugin: 'com.github.dcendents.android-maven'
 
  group='com.github.YourUsername'
@@ -43,7 +43,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 ## 拉依赖
 
-```
+```groovy
 allprojects {
  repositories {
     jcenter()
@@ -54,7 +54,7 @@ allprojects {
 
 最后
 
-```
+```groovy
 dependencies {
     compile 'com.github.YourUsername:YourProjectName:YourProjectVersion'
 }
