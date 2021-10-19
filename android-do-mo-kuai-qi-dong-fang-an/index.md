@@ -21,11 +21,11 @@ categories: Android
 2. 许多启动任务并不需要即时加载，通常做法也只是 post 到首页加载后
 3. 模块化后，模块启动任务之间的依赖关系难以处理
 
-针对1，谷歌官方在 androidx 上也推行了一款[启动框架](https://developer.android.com/topic/libraries/app-startup)，通过向 provider 注册任务来解放 Application，但该框架实现相对简单，功能较少，但也对我启发不少
+针对 1，谷歌官方在 androidx 上也推行了一款[启动框架](https://developer.android.com/topic/libraries/app-startup)，通过向 provider 注册任务来解放 Application，但该框架实现相对简单，功能较少，但也对我启发不少
 
-针对2，我希望启动任务不仅仅只是延迟到首页显示后执行，而是希望启动任务能并行执行，并且由框架计算出最优执行顺序
+针对 2，我希望启动任务不仅仅只是延迟到首页显示后执行，而是希望启动任务能并行执行，并且由框架计算出最优执行顺序
 
-针对3，模块的启动任务由模块自行声明，通过类似路由的id指向依赖任务，并且框架在编译期间能够校验启动任务的合法性以及输出依赖关系图，辅助开发者分析启动任务链
+针对 3，模块的启动任务由模块自行声明，通过类似路由的 id 指向依赖任务，并且框架在编译期间能够校验启动任务的合法性以及输出依赖关系图，辅助开发者分析启动任务链
 
 ## 开发
 
@@ -48,7 +48,7 @@ annotation class StartupTaskRegister(
 
 ```kotlin
 class StartupProcessor : AbstractProcessor() {
-    /* 
+    /*
     拿到使用 StartupTaskRegister 注解的 StartupTask
     一一对应生成 STData 文件，最终 App 启动的任务类
      */
@@ -78,7 +78,7 @@ App 启动时，通过反射调用 StartupLoaderInit#init 方法，向框架注�
 
 启动任务需要且不仅仅只是异步执行，更需要支持阻塞启动线程。
 
-例如有启动任务A、B、C，A和B需要同时执行，C在A后，并且C需要在首页加载前执行。如果A和B只单纯放在新线程执行，那C将不能保证在首页加载前执行，此时需要阻塞启动线程，等待C完成后释放
+例如有启动任务 A、B、C，A 和 B 需要同时执行，C 在 A 后，并且 C 需要在首页加载前执行。如果 A 和 B 只单纯放在新线程执行，那 C 将不能保证在首页加载前执行，此时需要阻塞启动线程，等待 C 完成后释放
 
 这一功能是通过使用 CountDownLatch 来实现，每个启动任务都会声明一个 CountDownLatch，个数为其依赖的数量
 
