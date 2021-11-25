@@ -57,7 +57,7 @@ public abstract void setNavigationMode(@NavigationMode int mode);
 public abstract int getNavigationMode();
 ```
 
-但Kotlin中只能使用Enum来代替，这里其实可以用内联类来获取更少的内存占用
+但Kotlin中校验失效，通常使用Enum来代替，这里其实可以用内联类来获取更少的内存占用
 
 ```kotlin
 @JvmInline
